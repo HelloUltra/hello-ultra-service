@@ -18,9 +18,13 @@ public class UserDao {
 	}
 	
 	public boolean checkMember(String userKey){
-		if(userRepository.findAll().contains(userKey)){
+		//아니 findAll은 List<User>에 담아야 한다는데 list는 <User>로 초기화 할 수 없다는데  arrayList로 초기화 해보려고해도
+		//nullpoint떨어지고 어쩌란말이냐.
+		/*List<User> userList = new ArrayList<User>();
+		userList = userRepository.findAll();
+		if(userList.contains(userKey)){
 			return true;
-		}
+		}*/
 		return false;
 	}
 }
