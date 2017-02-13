@@ -18,9 +18,7 @@ public class UserDao {
 	}
 	
 	public boolean checkMember(String userKey){
-		List <User> memberList = new ArrayList<User>();
-		memberList = userRepository.findAll();
-		if(memberList.contains(userKey)){
+		if(userRepository.findAll().contains(userKey)){
 			return true;
 		}
 		return false;
