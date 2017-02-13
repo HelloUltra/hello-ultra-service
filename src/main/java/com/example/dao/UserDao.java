@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ public class UserDao {
 	}
 	
 	public boolean checkMember(String userKey){
-		List <User> memberList = userRepository.findAll();
+		List <User> memberList = new ArrayList<User>();
+		memberList = userRepository.findAll();
 		if(memberList.contains(userKey)){
 			return true;
 		}
