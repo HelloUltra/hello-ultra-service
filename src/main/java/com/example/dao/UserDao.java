@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.example.model.User;
 import com.example.repository.UserRepository;
 
+//둘다 테스트해보자.
+@Repository
 public class UserDao {
 	
+	//userRepository 인터페이스에서 npe발생 이슈.
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -18,13 +23,11 @@ public class UserDao {
 	}
 	
 	public boolean checkMember(String userKey){
-		//아니 findAll은 List<User>에 담아야 한다는데 list는 <User>로 초기화 할 수 없다는데  arrayList로 초기화 해보려고해도
-		//nullpoint떨어지고 어쩌란말이냐.
-		/*List<User> userList = new ArrayList<User>();
+		List<User> userList = new ArrayList<User>();
 		userList = userRepository.findAll();
 		if(userList.contains(userKey)){
 			return true;
-		}*/
+		}
 		return false;
 	}
 }
