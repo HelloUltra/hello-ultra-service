@@ -4,7 +4,8 @@ public class Message {
 	private String userKey;
 	private String type;
 	private String content;
-
+	private boolean isButton = false;
+	
 	public String getUserkey() {
 		return userKey;
 	}
@@ -24,5 +25,19 @@ public class Message {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	public boolean isButton() {
+		return isButton;
+	}
+
+	public void setButton(boolean isButton) {
+		this.isButton = isButton;
+	}
+
+	@Override
+	public String toString() {
+		return "Message [userKey=" + userKey + ", type=" + type + ", content=" + content + "]";
+	}
+	
 
 }

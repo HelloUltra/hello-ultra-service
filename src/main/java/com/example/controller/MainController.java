@@ -25,8 +25,6 @@ public class MainController {
 	@GetMapping("/keyboard")
 	public Map<String, Object> keyboard(){
 		Map<String, Object> jsonObject = new HashMap<String, Object>();
-		
-		jsonObject = new HashMap<String, Object>();
 		jsonObject.put("type","text");
 		return jsonObject;
 	}
@@ -37,24 +35,13 @@ public class MainController {
 		System.out.println("메세지받음");
 	
 		
-		String userKey = message.getUserkey();
+	/*	String userKey = message.getUserkey();
 		String type = message.getType();
-		String content = message.getContent();
+		String content = message.getContent();*/
 		
-		log.debug("userKey : {}",userKey);
-		log.debug("type : {}",type);		
-		log.debug("content : {}",content);
+		log.debug(message.toString());
 		
-		Answer answer = new Answer();
-		String makedMessage = answer.makeMessage(message);
-		
-		JsonObject jsonObject = new JsonObject();
-		
-		//버튼응답인지 텍스트응답인지 처리
-		if(answer.getIsButton()){
-			return jsonObject.buttonObject(makedMessage, message);
-		}
-		
-		return jsonObject.textObject(makedMessage, message);
+		JsonObject jsonObject = new JsonObject();				
+		return jsonObject.sendObject(message);
 	}
 }
