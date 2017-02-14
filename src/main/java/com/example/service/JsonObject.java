@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
-
 import com.example.model.Message;
 
-@Service
+
 public class JsonObject {
 	private ArrayList<String> btList = new ArrayList<String>();
 	private Map <String, Object> msMap = new HashMap<String, Object>();
@@ -21,7 +19,7 @@ public class JsonObject {
 		String message = answer.makeMessage(ms);
 		if(ms.isButton()){
 			//어떤버튼기능제공할지
-			if(ms.getContent().equals("#회원가입")){
+			if("#회원가입".equals(ms.getContent())){
 				btList.add("확인　");
 				btList.add("취소　");
 			}
