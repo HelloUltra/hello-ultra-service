@@ -1,17 +1,17 @@
 package com.example.model;
 
 public class Message {
-	private String userKey;
+	private String user_key;
 	private String type;
 	private String content;
 	private boolean isButton = false;
 	
-	public String getUserkey() {
-		return userKey;
+	public String getUser_key() {
+		return user_key;
 	}
 	
-	public void setUserkey(String userKey) {
-		this.userKey = userKey;
+	public void setUserkey(String user_key) {
+		this.user_key = user_key;
 	}
 	public String getType() {
 		return type;
@@ -36,7 +36,7 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return "Message [userKey=" + userKey + ", type=" + type + ", content=" + content + "]";
+		return "Message [user_key=" + user_key + ", type=" + type + ", content=" + content + "]";
 	}
 	
 

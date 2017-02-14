@@ -47,7 +47,7 @@ public class Answer{
 		if(ms.getContent().startsWith("@")){
 			
 			User user = new User();
-			user.setUserkey(ms.getUserkey());
+			user.setUserkey(ms.getUser_key());
 			user.setNickName(ms.getContent().substring(1));
 			userRepository.save(user);
 			message = "감사합니다! 이제 hello-utlra의 서비스를 이용하실 수 있습니다.";

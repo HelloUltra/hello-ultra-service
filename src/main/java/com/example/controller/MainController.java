@@ -33,12 +33,7 @@ public class MainController {
 	public Object message( @RequestBody Message message) throws ParseException{
 	
 		System.out.println("메세지받음");
-	
-		
-	/*	String userKey = message.getUserkey();
-		String type = message.getType();
-		String content = message.getContent();*/
-		
+			
 		log.debug(message.toString());
 		
 		JsonObject jsonObject = new JsonObject();				
