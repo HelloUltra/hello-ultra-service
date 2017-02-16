@@ -2,7 +2,6 @@ package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import com.example.model.Message;
 import com.example.model.User;
@@ -20,7 +19,8 @@ public class Answer{
 
 	@Autowired
 	private UserRepository userRepository;
-
+	
+	
 	public String makeMessage(Message ms) {
 		String message;
 		
@@ -49,7 +49,7 @@ public class Answer{
 		if(ms.getContent().startsWith("@")){
 			
 			User user = new User();
-			user.setUserkey(ms.getUser_key());
+			user.setUser_key(ms.getUser_key());
 			user.setNickName(ms.getContent().substring(1));
 			userRepository.save(user);
 			message = "감사합니다! 이제 hello-utlra의 서비스를 이용하실 수 있습니다.";

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.model.Message;
-import com.example.service.Answer;
 import com.example.service.JsonObject;
 
 @RestController

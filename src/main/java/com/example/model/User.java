@@ -12,16 +12,16 @@ public class User {
 	@GeneratedValue
 	private int id;
 	
-	@Column(name="userKey", nullable=false)
-	private String userKey;
+	@Column(name="user_key", nullable=false)
+	private String user_key;
 	@Column(name="nickName", nullable=false)
 	private String nickName;
 	
-	public String getUserkey() {
-		return userKey;
+	public String getUser_key() {
+		return user_key;
 	}
-	public void setUserkey(String userKey) {
-		this.userKey = userKey;
+	public void setUser_key(String userKey) {
+		this.user_key = userKey;
 	}
 	public String getNickName() {
 		return nickName;
