@@ -46,9 +46,9 @@ public class MainController {
 			User user = new User();
 			user.setUser_key(message.getUser_key());
 			user.setNickName(message.getContent().substring(1));
-			//???여기서왜못빠져나오지
+			//json형태 맞춰서 리턴해야하니까..
 			userRepository.save(user);
-			log.debug("save빠져나옴");
+			return jsonObject.sendObject(message);
 		}
 		log.debug("회원가입 if문 빠져나옴");
 		return result;

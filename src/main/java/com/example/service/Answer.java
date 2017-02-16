@@ -1,15 +1,10 @@
 package com.example.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import com.example.model.Message;
-import com.example.model.User;
-import com.example.repository.UserRepository;
 
 
 
-@Repository
 public class Answer{
 
 	//버튼으로 받은 텍스트인지 관련 이슈
@@ -17,9 +12,9 @@ public class Answer{
 	//private Boolean isButtonMessage = false;
 	
 
-	@Autowired
+/*	@Autowired
 	private UserRepository userRepository;
-	
+	*/
 	
 	public String makeMessage(Message ms) {
 		String message;
@@ -46,15 +41,16 @@ public class Answer{
 		}
 		
 		//회원가입닉네임받기
-		/*if(ms.getContent().startsWith("@")){
+		if(ms.getContent().startsWith("@")){
 			
-			User user = new User();
+			/*User user = new User();
 			user.setUser_key(ms.getUser_key());
 			user.setNickName(ms.getContent().substring(1));
 			userRepository.save(user);
+			*/
 			message = "감사합니다! 이제 hello-utlra의 서비스를 이용하실 수 있습니다.";
 			return message;
-		}*/
+		}
 		
 		return ms.getContent();
 	}
