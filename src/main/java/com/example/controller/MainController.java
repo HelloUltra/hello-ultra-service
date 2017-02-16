@@ -22,7 +22,6 @@ public class MainController {
 
 	@Autowired
 	private UserRepository userRepository;
-	private boolean join = false;
 	private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
 	@GetMapping("/keyboard")
@@ -44,16 +43,14 @@ public class MainController {
 		
 		//회원가입.. 꼭 컨트롤러에서밖에 못하냐!!!
 		if (message.getContent().startsWith("@")) {
-
 			User user = new User();
 			user.setUser_key(message.getUser_key());
 			user.setNickName(message.getContent().substring(1));
+			//???여기서왜못빠져나오지
 			userRepository.save(user);
-			join = true;
+			log.debug("save빠져나옴");
 		}
-		if(join){
-			return "감사합니다! 이제 hello-utlra의 서비스를 이용하실 수 있습니다.";			
-		}
+		log.debug("회원가입 if문 빠져나옴");
 		return result;
 	}
 }
