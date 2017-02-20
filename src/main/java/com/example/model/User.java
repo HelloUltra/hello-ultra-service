@@ -10,18 +10,18 @@ public class User {
 	
 	@Id
 	@GeneratedValue
-	private int id;
+	private Long id;
 	
 	@Column(name="user_key", nullable=false)
-	private String user_key;
-	@Column(name="nickName", nullable=false)
+	private String userKey;
+	@Column(name="nick_name", nullable=false)
 	private String nickName;
 	
-	public String getUser_key() {
-		return user_key;
+	public String getUserKey() {
+		return userKey;
 	}
 	public void setUser_key(String userKey) {
-		this.user_key = userKey;
+		this.userKey = userKey;
 	}
 	public String getNickName() {
 		return nickName;
@@ -29,5 +29,4 @@ public class User {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	
 }

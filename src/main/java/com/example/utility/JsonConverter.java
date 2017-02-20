@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,16 +7,14 @@ import java.util.Map;
 import com.example.model.Message;
 
 
-public class JsonObject {
-	private ArrayList<String> btList = new ArrayList<String>();
-	private Map <String, Object> msMap = new HashMap<String, Object>();
-	private Map <String, Object> keyboardMap = new HashMap<String, Object>();
-	private Map <String, Object> sendObject = new HashMap<String, Object>();
+public class JsonConverter {
+	private static ArrayList<String> btList = new ArrayList<String>();
+	private static Map <String, Object> msMap = new HashMap<String, Object>();
+	private static Map <String, Object> keyboardMap = new HashMap<String, Object>();
+	private static Map <String, Object> sendObject = new HashMap<String, Object>();
 	
 	//버튼처리 오브젝트	
-	public Map <String, Object> sendObject(Message ms){
-		Answer answer = new Answer();
-		String message = answer.makeMessage(ms);
+	public static Map <String, Object> makeObject(Message ms, String message){
 		if(ms.isButton()){
 			//어떤버튼기능제공할지
 			if("#회원가입".equals(ms.getContent())){
@@ -38,6 +36,4 @@ public class JsonObject {
 		sendObject.put("message", msMap);
 		return sendObject;
 	}
-	
-	
 }
