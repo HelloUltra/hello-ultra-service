@@ -49,9 +49,7 @@ public class MainController {
 		//회원가입.. 꼭 컨트롤러에서밖에 못하냐!!!
 		if (message.getContent().startsWith("@")) {
 			User user = new User();
-			user.setUser_key(message.getUser_key());
-			user.setNickName(message.getContent().substring(1));
-	
+			user.toSave(message.getUser_key(), message.getContent().substring(1));
 			userRepository.save(user);
 			return JsonConverter.makeObject(message, "감사합니다! 이제 hello-utlra의 서비스를 이용하실 수 있습니다.");
 		}

@@ -29,4 +29,9 @@ public class User {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
+	public void toSave(String user_key, String nickName){
+		this.userKey = user_key;
+		this.nickName = nickName;
+	}
+	
 }
