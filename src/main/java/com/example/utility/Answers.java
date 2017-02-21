@@ -15,6 +15,7 @@ public class Answers {
 		answers.put("확인　", "감사합니다! 먼저 '@닉네임' 형태로 사용하실 닉네임을 입력해주세요. ex)@ultra");
 		answers.put("취소　", "다음엔 꼭 함께해주세요");
 		answers.put("안녕", "안뇽하세요");
+		answers.put("#네이버", DataParser.test());
 		
 		
 	}

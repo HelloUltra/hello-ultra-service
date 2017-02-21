@@ -18,18 +18,19 @@ public class JsonConverter {
 		if(ms.isButton()){
 			//어떤버튼기능제공할지
 			if("#회원가입".equals(ms.getContent())){
+				btList.clear();
 				btList.add("확인　");
 				btList.add("취소　");
 			}
 			
 			keyboardMap.put("type","buttons");
 			keyboardMap.put("buttons",btList);	
-
+			
 			msMap.put("text",message);
 			
 			sendObject.put("message", msMap);
 			sendObject.put("keyboard", keyboardMap);
-			
+		
 			return sendObject;
 		}
 		msMap.put("text", message);

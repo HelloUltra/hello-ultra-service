@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import com.example.repository.UserRepository;
 import com.example.utility.JsonConverter;
 import com.example.utility.ResponseMessage;
 import com.example.utility.Answers;
+import com.example.utility.DataParser;
 
 @RestController
 public class MainController {
@@ -35,13 +37,17 @@ public class MainController {
 	}
 
 	@PostMapping("/message")
-	public Object message(@RequestBody Message message) throws ParseException {
+	public Object message(@RequestBody Message message) throws ParseException, IOException {
 		
 		log.debug("메세지받음");
 		//버튼으로 돌려줘야 하는 서비스인지 처리
 		if("#회원가입".equals(message.getContent())){
 			log.debug("버튼메시지 입력받음");
 			message.setButton(true);
+		}
+		if("프로야구순위".equals(message.getContent())){
+			System.out.println("태워보자");
+			DataParser.test();
 		}
 		
 		log.debug(message.toString());
@@ -52,7 +58,7 @@ public class MainController {
 			User user = new User(message);
 			//user.toSave(message.getUser_key(), message.getContent().substring(1));
 			 userRepository.save(user);
-			return JsonConverter.makeObject(message, "감사합니다! 이제 hello-utlra의 서비스를 이용하실 수 있습니다.");
+			return ResponseMessage.response(message, "감사합니다! 이제 hello-utlra의 서비스를 이용하실 수 있습니다.");
 		}
 		
 		log.debug(JsonConverter.makeObject(message, Answers.answer(message)).toString());
