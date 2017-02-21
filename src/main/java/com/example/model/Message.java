@@ -5,7 +5,15 @@ public class Message {
 	private String type;
 	private String content;
 	private boolean button = false;
+	private boolean nickName = false;
 
+
+	public boolean isNickName() {
+		if(content.startsWith("@")){
+			nickName = true;
+		}
+		return nickName;
+	}
 
 	public String getUser_key() {
 		return user_key;

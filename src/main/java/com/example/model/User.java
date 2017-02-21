@@ -17,6 +17,11 @@ public class User {
 	@Column(name="nick_name", nullable=false)
 	private String nickName;
 	
+	//회원가입을 위한
+	public User(Message message){
+		this.userKey = message.getUser_key();
+		this.nickName = message.getContent().substring(1);
+	}
 	public String getUserKey() {
 		return userKey;
 	}
@@ -29,9 +34,9 @@ public class User {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	public void toSave(String user_key, String nickName){
+/*	public void toSave(String user_key, String nickName){
 		this.userKey = user_key;
 		this.nickName = nickName;
-	}
+	}*/
 	
 }
