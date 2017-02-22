@@ -1,12 +1,18 @@
 package com.example.model;
 
+
 public class Message {
 	private String user_key;
 	private String type;
 	private String content;
+	private static String tagName;
+
 	private boolean button = false;
 	private boolean nickName = false;
 
+	public static String getTagName() {
+		return tagName;
+	}
 
 	public boolean isNickName() {
 		if(content.startsWith("@")){
@@ -14,6 +20,7 @@ public class Message {
 		}
 		return nickName;
 	}
+	
 
 	public String getUser_key() {
 		return user_key;

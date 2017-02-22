@@ -15,6 +15,7 @@ public class JsonConverter {
 	
 	//버튼처리 오브젝트	
 	public static Map <String, Object> makeObject(Message ms, String message){
+	
 		if(ms.isButton()){
 			//어떤버튼기능제공할지
 			if("#회원가입".equals(ms.getContent())){
