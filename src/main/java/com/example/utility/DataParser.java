@@ -9,34 +9,27 @@ import org.jsoup.select.Elements;
 
 public class DataParser {
 	public static String test() {
+		System.setProperty("jsse.enableSNIExtension", "false") ; 
 		Document doc;
 		String result = "";
+
 		try {
-			/*
-			 * Authenticator.setDefault(new Authenticator() {
-			 * 
-			 * @Override protected PasswordAuthentication
-			 * getPasswordAuthentication() { return new
-			 * PasswordAuthentication(username, password.toCharArray()); } });
-			 */
 
 			// need http protocol
-			doc = Jsoup.connect("http://www.naver.com/").get();
-
-			// get page title
-			result = doc.title() + "\n";
-
-			// get all links
-			Elements links = doc.select("a[href]");
+			doc = Jsoup.connect("https://slipp.net/").get();
+			
+			Elements links = doc.select("section.qna-tags ul li a.tag");
 			for (Element link : links) {
-				result += link.attr("href");
 				result += link.text();
-
+				String [] temp = result.split(" ");
+				result = temp[0]+"\n";			
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		result = result.substring(1);
+		System.out.println(result);
 		return result;
 	}
 
