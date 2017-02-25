@@ -1,6 +1,5 @@
 package com.example.model;
 
-
 public class Message {
 	private String user_key;
 	private String type;
@@ -15,12 +14,11 @@ public class Message {
 	}
 
 	public boolean isNickName() {
-		if(content.startsWith("@")){
+		if (content.startsWith("@")) {
 			nickName = true;
 		}
 		return nickName;
 	}
-	
 
 	public String getUser_key() {
 		return user_key;

@@ -1,4 +1,4 @@
-package com.example.utility;
+package com.example.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,27 +10,23 @@ import org.jsoup.select.Elements;
 
 import com.example.model.Message;
 
-public class DataParser extends Message {
-	public static ArrayList hashTags = new ArrayList();
+public class DataParser {
+	public static ArrayList<String> hashTags = new ArrayList<String>();
 	public static String tagName;
-	public static boolean hashTag;
-	
+
 	public static void hashTagParser() {
-		System.setProperty("jsse.enableSNIExtension", "false") ; 
+		System.setProperty("jsse.enableSNIExtension", "false");
 		Document doc;
-		String result = "";
 		try {
 			// need http protocol
 			doc = Jsoup.connect("https://slipp.net/").get();
-			
+
 			Elements links = doc.select("section.qna-tags ul li a.tag");
 			for (Element link : links) {
-			
-				//result += link.text();
-				String [] temp = link.text().split(" ");
-				result = temp[0];	
-				hashTags.add(result);
-			
+
+				String[] temp = link.text().split(" ");
+				hashTags.add(temp[0]);
+
 			}
 
 		} catch (IOException e) {
@@ -38,6 +34,5 @@ public class DataParser extends Message {
 		}
 
 	}
-	
 
 }

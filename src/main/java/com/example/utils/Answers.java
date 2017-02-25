@@ -1,4 +1,4 @@
-package com.example.utility;
+package com.example.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,7 @@ import com.example.model.Message;
 
 public class Answers extends Message {
 	private static Map<String, Object> answers = new HashMap<String, Object>();
-	
+
 	static {
 		DataParser.hashTagParser();
 		answers.put("안녕", "안뇽하세요");
@@ -17,7 +17,8 @@ public class Answers extends Message {
 		answers.put("안녕", "안뇽하세요");
 
 		for (int i = 1; i < DataParser.hashTags.size(); i++) {
-			answers.put(DataParser.hashTags.get(i).toString(), "https://slipp.net/questions/tagged/" + DataParser.hashTags.get(i));
+			answers.put(DataParser.hashTags.get(i).toString(),
+					"https://slipp.net/questions/tagged/" + DataParser.hashTags.get(i));
 		}
 	}
 
