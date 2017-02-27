@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,10 @@ public class MainController {
 	}
 
 	@PostMapping("/message")
-	public MessageResponse message(@RequestBody MessageRequest message) {
+	public MessageResponse message(@RequestBody MessageRequest message) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return messageDispatcher.dispatch(message);
 	}
+	
+	
+	
 }

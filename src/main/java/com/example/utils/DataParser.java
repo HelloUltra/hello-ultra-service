@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.example.model.Message;
 
 public class DataParser {
 	public static ArrayList<String> hashTags = new ArrayList<String>();

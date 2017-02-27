@@ -1,36 +1,32 @@
 package com.example.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class User {
-
+	
 	@Id
 	@GeneratedValue
-	private Long id;
-
-	@Column(name = "user_key", nullable = false)
-	private String userKey;
-	@Column(name = "nick_name", nullable = false)
+	private Long idx;
+	
+	@Column(name = "nickName", nullable=false, unique=true )
 	private String nickName;
-
-	// 회원가입을 위한
-	public User(Message message) {
-		this.userKey = message.getUser_key();
-		this.nickName = message.getContent().substring(1);
-	}
-
-	public String getUserKey() {
-		return userKey;
-	}
-
-	public void setUser_key(String userKey) {
-		this.userKey = userKey;
-	}
-
+	
+	@Column(name = "user_key", nullable=false, unique=true)
+	private String userKey;
+	
+/*	@OneToMany(mappedBy="writer")
+	//@JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
+	private List<Question> question;
+*/
 	public String getNickName() {
 		return nickName;
 	}
@@ -39,4 +35,11 @@ public class User {
 		this.nickName = nickName;
 	}
 
+	public String getUserKey() {
+		return userKey;
+	}
+
+	public void setUserKey(String userKey) {
+		this.userKey = userKey;
+	}
 }

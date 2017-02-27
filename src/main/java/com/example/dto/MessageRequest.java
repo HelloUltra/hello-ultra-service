@@ -28,7 +28,6 @@ public class MessageRequest {
 	}
 	
 	public String keyword(){
-		return this.content.substring(
-				command().length(), this.content.length());
+		return this.content.substring(command().length(), this.content.length());
 	}
 }
