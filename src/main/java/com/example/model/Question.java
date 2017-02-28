@@ -8,6 +8,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -19,7 +20,10 @@ public class Question {
 	private Long idx;
 	
 	@ManyToMany
-	@JoinColumn(foreignKey=@ForeignKey(name="fk_tag_question"))
+	@JoinTable(name="question_tags",
+	joinColumns = @JoinColumn(name = "questions_idx"),
+	inverseJoinColumns=@JoinColumn(name = "tags_idx"))
+	//@JoinColumn(foreignKey=@ForeignKey(name="fk_tag_question"))
 	private List<Tag> tags;
 	
 	@ManyToOne

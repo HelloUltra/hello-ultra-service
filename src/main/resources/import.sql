@@ -1,4 +1,3 @@
-INSERT INTO QUESTION (idx,title, url, writer_idx) VALUES (1,'question', 'www.naver.com',1);
+INSERT INTO QUESTION (idx,title, url) VALUES (1,'question', 'www.naver.com');
 INSERT INTO TAG (IDX,TAG_NAME) VALUES (1,'spring');
-INSERT INTO QUESTION_TAGS (QUESTIONS_IDX, TAGS_IDX) VALUES (1,1);
 INSERT INTO USER (IDX,NICK_NAME,USER_KEY) VALUES(1,'단데','123ABC');

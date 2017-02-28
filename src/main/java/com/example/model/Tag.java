@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -20,7 +20,10 @@ public class Tag {
 	@Column(name="tagName")
 	private String tagName;
 	
-	@ManyToMany(mappedBy="tags")
+	@ManyToMany//(mappedBy="tags")
+	@JoinTable(name = "question_tags",
+	joinColumns = @JoinColumn(name="tags_idx"),
+	inverseJoinColumns=@JoinColumn(name="questions_idx"))
 	//@JoinColumn(foreignKey=@ForeignKey(name="fk_tag_question"))
 	private List<Question> questions;
 
@@ -38,6 +41,11 @@ public class Tag {
 
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
+	}
+
+	@Override
+	public String toString() {
+		return "Tag [idx=" + idx + ", tagName=" + tagName + ", questions=" + questions + "]";
 	}
 	
 }
