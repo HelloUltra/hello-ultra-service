@@ -5,7 +5,7 @@ INSERT INTO QUESTION (idx,title, url) VALUES (4,'question4', 'www.nate.com');
 INSERT INTO QUESTION (idx,title, url) VALUES (5,'question5', 'www.bing.com');
 INSERT INTO QUESTION (idx,title, url) VALUES (6,'question6', 'www.google.com');
 
-INSERT INTO TAG (idx, name) VALUES (1,'spring');
+INSERT INTO TAG (idx, name) VALUES (1,'테스트');
 
 INSERT INTO QUESTION_TAG (question_idx, tag_idx) VALUES (1,1);
 INSERT INTO QUESTION_TAG (question_idx, tag_idx) VALUES (2,1);
