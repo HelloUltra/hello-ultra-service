@@ -20,10 +20,9 @@ public class Question {
 	private Long idx;
 	
 	@ManyToMany
-	@JoinTable(name="question_tags",
-	joinColumns = @JoinColumn(name = "questions_idx"),
-	inverseJoinColumns=@JoinColumn(name = "tags_idx"))
-	//@JoinColumn(foreignKey=@ForeignKey(name="fk_tag_question"))
+	@JoinTable(name="question_tag",
+	joinColumns = @JoinColumn(name = "question_idx", referencedColumnName = "idx"),
+	inverseJoinColumns=@JoinColumn(name = "tag_idx", referencedColumnName = "idx"))
 	private List<Tag> tags;
 	
 	@ManyToOne
@@ -38,7 +37,39 @@ public class Question {
 	
 	@Column(name="url")
 	private String url;
-	
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public User getWriter() {
+		return writer;
+	}
+
+	public void setWriter(User writer) {
+		this.writer = writer;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Override
 	public String toString() {
 		return "[" + idx + "]" + title + "(" + url +")";

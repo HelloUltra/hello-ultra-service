@@ -49,7 +49,7 @@ public class MessageDispatcher {
 		tagg = tagRepository.findByTagName(tag);
 		System.out.println(tagg);
 		*/
-		tagRepository.findByTagName(tag).getQuestions()
+		tagRepository.findByName(tag).getQuestions()
 		.stream().forEach(question -> {
 			stringBuilder.append(question);
 			stringBuilder.append("\n");

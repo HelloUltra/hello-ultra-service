@@ -17,26 +17,22 @@ public class Tag {
 	@GeneratedValue
 	private Long idx;
 	
-	@Column(name="tagName")
-	private String tagName;
+	@Column
+	private String name;
 	
-	@ManyToMany//(mappedBy="tags")
-	@JoinTable(name = "question_tags",
-	joinColumns = @JoinColumn(name="tags_idx"),
-	inverseJoinColumns=@JoinColumn(name="questions_idx"))
-	//@JoinColumn(foreignKey=@ForeignKey(name="fk_tag_question"))
+	@ManyToMany(mappedBy="tags")
 	private List<Question> questions;
 
 	public List<Question> getQuestions() {
 		return questions;
 	}
 
-	public String getTagName() {
-		return tagName;
+	public String getName() {
+		return name;
 	}
 
-	public void setTagName(String tagName) {
-		this.tagName = tagName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setQuestions(List<Question> questions) {
@@ -45,7 +41,7 @@ public class Tag {
 
 	@Override
 	public String toString() {
-		return "Tag [idx=" + idx + ", tagName=" + tagName + ", questions=" + questions + "]";
+		return "Tag [idx=" + idx + ", name=" + name + ", questions=" + questions + "]";
 	}
 	
 }
