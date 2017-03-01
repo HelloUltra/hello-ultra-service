@@ -24,11 +24,11 @@ public class MainController {
 
 	@GetMapping("/keyboard")
 	public KeyBoardResponse keyboard() {
-		return MessageDispatcher.DEFAULT_KEYBOARD;
+		return KeyBoardResponse.DEFAULT;
 	}
 
 	@PostMapping("/message")
-	public MessageResponse message(@RequestBody MessageRequest message) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public MessageResponse message(@RequestBody MessageRequest message)  {
 		return messageDispatcher.dispatch(message);
 	}
 	

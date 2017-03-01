@@ -25,4 +25,6 @@ public class KeyBoardResponse {
 	public void setButtons(String[] buttons) {
 		this.buttons = buttons;
 	}
+
+	public static KeyBoardResponse DEFAULT = new KeyBoardResponse("text", null);
 }

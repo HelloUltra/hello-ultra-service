@@ -75,4 +75,6 @@ public class MessageResponse {
 			this.url = url;
 		}
 	}
+
+	public static MessageResponse FAILED = new MessageResponse("서버 오류", null, null);
 }
