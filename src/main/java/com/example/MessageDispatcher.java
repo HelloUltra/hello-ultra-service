@@ -3,6 +3,8 @@ package com.example;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.example.model.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,10 @@ public class MessageDispatcher {
 	
 	private String search(String tag){
 		log.debug("#검색:{}",tag);
-		return tagRepository.findByName(tag).getSearchResult();
+		Tag tagObject;
+		if((tagObject=tagRepository.findByName(tag)) == null){
+			return "검색 결과가 없습니다.";
+		}
+		return tagObject.getSearchResult();
 	}
 }
