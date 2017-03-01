@@ -7,12 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.example.dto.KeyBoardResponse;
 import com.example.dto.MessageRequest;
 import com.example.dto.MessageResponse;
 import com.example.repository.TagRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 public class MessageDispatcher {
 	private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
 
@@ -42,18 +43,6 @@ public class MessageDispatcher {
 	
 	private String search(String tag){
 		log.debug("#검색:{}",tag);
-		StringBuilder stringBuilder = new StringBuilder();
-		/*
-		이런 코드는 테스트케이스 작성해서 확인해주세요.
-		Tag tagg = new Tag();
-		tagg = tagRepository.findByTagName(tag);
-		System.out.println(tagg);
-		*/
-		tagRepository.findByName(tag).getQuestions()
-		.stream().forEach(question -> {
-			stringBuilder.append(question);
-			stringBuilder.append("\n");
-		});
-		return stringBuilder.toString();
+		return tagRepository.findByName(tag).getSearchResult();
 	}
 }

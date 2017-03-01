@@ -27,19 +27,4 @@ public class User {
 	//@JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
 	private List<Question> question;
 */
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public String getUserKey() {
-		return userKey;
-	}
-
-	public void setUserKey(String userKey) {
-		this.userKey = userKey;
-	}
 }

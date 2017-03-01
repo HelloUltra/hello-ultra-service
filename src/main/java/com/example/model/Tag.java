@@ -2,13 +2,8 @@ package com.example.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Tag {
@@ -23,20 +18,13 @@ public class Tag {
 	@ManyToMany(mappedBy="tags")
 	private List<Question> questions;
 
-	public List<Question> getQuestions() {
-		return questions;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+	public String getSearchResult(){
+		StringBuilder stringBuilder = new StringBuilder();
+		questions.stream().forEach(question -> {
+			stringBuilder.append(question);
+			stringBuilder.append("\n");
+		});
+		return stringBuilder.toString();
 	}
 
 	@Override
