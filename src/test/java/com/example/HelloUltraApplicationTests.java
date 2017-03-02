@@ -25,9 +25,6 @@ public class HelloUltraApplicationTests {
 	private MessageDispatcher messageDispatcher;
 
 	@Autowired
-	private TagRepository tagRepository;
-
-	@Autowired
 	private QuestionRepository questionRepository;
 
 	private MessageRequest messageRequest;
@@ -35,14 +32,6 @@ public class HelloUltraApplicationTests {
 	@Before
 	public void setUp() throws Exception {
 		messageRequest = new MessageRequest();
-	}
-
-	@Test
-	@Transactional
-	public void 검색_기능_테스트() throws Exception {
-		Tag tag = tagRepository.findByName("테스트");
-		assertNotEquals(tag, null);
-		System.out.println(tag.getSearchResult());
 	}
 
 	@Test

@@ -2,9 +2,13 @@ package com.example;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.example.model.Question;
 import com.example.model.Tag;
+import com.example.repository.QuestionRepository;
+import com.example.utils.QuestionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +26,7 @@ public class MessageDispatcher {
 	private Map<String, Method> functionMap;
 
 	@Autowired
-	private TagRepository tagRepository;
+	private QuestionRepository questionRepository;
 
 	public MessageDispatcher(){
 		functionMap= new HashMap<>();
@@ -45,10 +49,10 @@ public class MessageDispatcher {
 	
 	private String search(String tag){
 		log.debug("#검색:{}",tag);
-		Tag tagObject;
-		if((tagObject=tagRepository.findByName(tag)) == null){
+		List<Question> questions;
+		if((questions=questionRepository.findTop3QuestionByTagName(tag)) == null || QuestionUtils.isEmpty(questions)){
 			return "검색 결과가 없습니다.";
 		}
-		return tagObject.getSearchResult();
+		return QuestionUtils.convertListToMessage(questions);
 	}
 }
