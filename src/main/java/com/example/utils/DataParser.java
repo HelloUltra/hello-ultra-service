@@ -7,11 +7,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.example.model.Tag;
 
 
 public class DataParser {
-	public static ArrayList<String> hashTags = new ArrayList<String>();
-	public static String tagName;
+	public static ArrayList<Tag> hashTags = new ArrayList<Tag>();
+	
+	private static final Logger log = LoggerFactory.getLogger(DataParser.class);
+
 
 	public static void hashTagParser() {
 		System.setProperty("jsse.enableSNIExtension", "false");
@@ -22,16 +28,16 @@ public class DataParser {
 
 			Elements links = doc.select("section.qna-tags ul li a.tag");
 			for (Element link : links) {
-
+				Tag tag = new Tag();
 				String[] temp = link.text().split(" ");
-				hashTags.add(temp[0]);
-
+				tag.setTagName(temp[0]);
+				hashTags.add(tag);
+					
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }
