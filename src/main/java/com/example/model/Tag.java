@@ -10,24 +10,28 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Tag {
 	
 	@Id
 	@GeneratedValue
+	@Column(name="tag_idx")
 	private Long idx;
 	
+
 	@Column(name="tagName")
 	private String tagName;
 	
-	@ManyToMany//(mappedBy="tags")
+	@ManyToMany
 	@JoinTable(name = "question_tags",
-	joinColumns = @JoinColumn(name="tags_idx"),
-	inverseJoinColumns=@JoinColumn(name="questions_idx"))
-	//@JoinColumn(foreignKey=@ForeignKey(name="fk_tag_question"))
+	joinColumns = @JoinColumn(name="tag_idx"),
+	inverseJoinColumns=@JoinColumn(name="question_idx"))
 	private List<Question> questions;
 
 	public List<Question> getQuestions() {
+		
 		return questions;
 	}
 

@@ -12,18 +12,20 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Question {
 	
 	@Id
 	@GeneratedValue
+	@Column(name="question_idx")
 	private Long idx;
 	
 	@ManyToMany
 	@JoinTable(name="question_tags",
-	joinColumns = @JoinColumn(name = "questions_idx"),
-	inverseJoinColumns=@JoinColumn(name = "tags_idx"))
-	//@JoinColumn(foreignKey=@ForeignKey(name="fk_tag_question"))
+	joinColumns = @JoinColumn(name = "question_idx"),
+	inverseJoinColumns=@JoinColumn(name = "tag_idx"))
 	private List<Tag> tags;
 	
 	@ManyToOne
@@ -37,8 +39,41 @@ public class Question {
 	private String title;
 	
 	@Column(name="url")
+	@JsonProperty
 	private String url;
 	
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public User getWriter() {
+		return writer;
+	}
+
+	public void setWriter(User writer) {
+		this.writer = writer;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Override
 	public String toString() {
 		return "[" + idx + "]" + title + "(" + url +")";

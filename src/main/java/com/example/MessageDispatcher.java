@@ -48,14 +48,12 @@ public class MessageDispatcher {
 	private String search(String tag){
 		log.debug("#검색:{}",tag);
 		StringBuilder stringBuilder = new StringBuilder();
-		Tag tagg = new Tag();
-		tagg = tagRepository.findByTagName(tag);
-		System.out.println(tagg);
 		tagRepository.findByTagName(tag).getQuestions()
 		.stream().forEach(question -> {
 			stringBuilder.append(question);
 			stringBuilder.append("\n");
 		});;
+		log.debug("answerForSearch:{}",stringBuilder.toString());
 		return stringBuilder.toString();
 	}
 }
