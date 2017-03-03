@@ -44,7 +44,7 @@ public class HelloUltraApplicationTests {
 	@Transactional
 	public void QueryDSL_검색_테스트_상위_3개() throws Exception {
 		List<Question> questionList = questionRepository.findTop3QuestionByTagName("테스트");
-		assertNotEquals(questionList.size(), 0);
+		assertEquals(3, questionList.size());
 		questionList.stream().forEach(System.out::println);
 	}
 
@@ -52,7 +52,6 @@ public class HelloUltraApplicationTests {
 	@Transactional
 	public void QueryDSL_검색_테스트_결과_없음() throws Exception {
 		List<Question> questionList = questionRepository.findTop3QuestionByTagName("없는검색어");
-		assertEquals(questionList.size(), 1);
-		assertEquals(questionList.get(0), null);
+		assertEquals(0, questionList.size());
 	}
 }

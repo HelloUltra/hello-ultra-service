@@ -50,7 +50,7 @@ public class MessageDispatcher {
 	private String search(String tag){
 		log.debug("#검색:{}",tag);
 		List<Question> questions;
-		if((questions=questionRepository.findTop3QuestionByTagName(tag)) == null || QuestionUtils.isEmpty(questions)){
+		if((questions=questionRepository.findTop3QuestionByTagName(tag)) == null || questions.size() == 0){
 			return "검색 결과가 없습니다.";
 		}
 		return QuestionUtils.convertListToMessage(questions);

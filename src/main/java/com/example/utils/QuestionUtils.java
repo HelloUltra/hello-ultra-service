@@ -13,8 +13,4 @@ public class QuestionUtils {
         questions.stream().forEach(question -> stringBuilder.append(question).append("\n"));
         return stringBuilder.toString();
     }
-
-    public static Boolean isEmpty(List<Question> questions){
-        return questions.iterator().next() == null;
-    }
 }

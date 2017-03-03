@@ -20,9 +20,10 @@ public class QuestionRepositoryImpl extends QueryDslRepositorySupport implements
     public List<Question> findTop3QuestionByTagName(String name) {
         QQuestion question = QQuestion.question;
         QTag tag = QTag.tag;
-        return from(question).rightJoin(question.tags, tag)
+        return from(question).innerJoin(question.tags, tag)
                 .on(tag.eq(from(tag).where(tag.name.eq(name))))
                 .limit(3)
+                .orderBy(question.idx.desc())
                 .fetch();
     }
 }
