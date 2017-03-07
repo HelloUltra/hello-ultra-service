@@ -40,13 +40,13 @@ public class HelloUltraApplicationTests {
 		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
 	}
 
-	@Test
+	/*@Test
 	@Transactional
 	public void QueryDSL_검색_테스트_상위_3개() throws Exception {
 		List<Question> questionList = questionRepository.findTop3QuestionByTagName("테스트");
 		assertEquals(3, questionList.size());
 		questionList.stream().forEach(System.out::println);
-	}
+	}*/
 
 	@Test
 	@Transactional
