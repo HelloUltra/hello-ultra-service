@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class AnswerUtils {
     public static String convertListToMessage(List<Answer> answers){
+
         StringBuilder stringBuilder = new StringBuilder();
         answers.stream().forEach(answer -> stringBuilder.append(answer).append("\n"));
         return stringBuilder.toString();

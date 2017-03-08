@@ -54,10 +54,16 @@ public class SearchFunction extends Function{
     }
 
     @Command("답변검색")
-    public String searchAnswer(Question questionId){
+    public String searchAnswer(String id){
         List <Answer> answers;
-        log.debug("#답변검색:{}",questionId.getIdx());
-       answers = answerRepository.findByQuestionIdx(questionId);
-       return AnswerUtils.convertListToMessage(answers);
+        Long questionId;
+        questionId = Long.parseLong(id);
+        Question question = questionRepository.findOne(questionId);
+        log.debug("#답변검색:{}",question.getIdx());
+        answers = answerRepository.findByQuestionIdx(question.getIdx());
+        if(answers==null || answers.size()==0){
+            return "검색 결과가 없습니다.";
+        }
+        return AnswerUtils.convertListToMessage(answers);
     }
 }

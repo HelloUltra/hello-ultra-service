@@ -20,4 +20,13 @@ public class Answer {
 
     private String content;
 
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "idx=" + idx +
+                ", writer=" + writer +
+                ", question=" + question +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

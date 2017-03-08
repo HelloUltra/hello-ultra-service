@@ -14,9 +14,9 @@ INSERT INTO QUESTION_TAG (question_idx, tag_idx) VALUES (4,1);
 INSERT INTO QUESTION_TAG (question_idx, tag_idx) VALUES (5,1);
 INSERT INTO QUESTION_TAG (question_idx, tag_idx) VALUES (6,1);
 
-INSERT INTO ANSWER (idx, content) VALUES (1,'답변1')
-INSERT INTO ANSWER (idx, content) VALUES (2,'답변2')
-INSERT INTO ANSWER (idx, content) VALUES (3,'답변3')
+INSERT INTO ANSWER (idx, content, question_idx) VALUES (1,'답변1',1)
+INSERT INTO ANSWER (idx, content, question_idx) VALUES (2,'답변2',1)
+INSERT INTO ANSWER (idx, content, question_idx) VALUES (3,'답변3',1)
 
 
 INSERT INTO USER (IDX,NICK_NAME,USER_KEY) VALUES(1,'단데','123ABC');

@@ -10,5 +10,5 @@ import java.util.List;
  * Created by user on 2017-03-08.
  */
 public interface AnswerRepository extends JpaRepository<Answer, Long>{
-    List<Answer> findByQuestionIdx(Question question);
+    List<Answer> findByQuestionIdx(Long question_idx);
 }
