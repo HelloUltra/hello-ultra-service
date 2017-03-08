@@ -1,9 +1,14 @@
 package com.example.service.impl;
 
 import com.example.annotations.Command;
+import com.example.model.Answer;
 import com.example.model.Question;
+import com.example.model.User;
+import com.example.repository.AnswerRepository;
 import com.example.repository.QuestionRepository;
+import com.example.repository.UserRepository;
 import com.example.service.Function;
+import com.example.utils.AnswerUtils;
 import com.example.utils.QuestionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +28,10 @@ public class SearchFunction extends Function{
 
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Command("검색")
     public String search(String tag){
@@ -42,5 +51,13 @@ public class SearchFunction extends Function{
             return "검색 결과가 없습니다.";
         }
         return question.getQuestionDetailInfo();
+    }
+
+    @Command("답변검색")
+    public String searchAnswer(Question questionId){
+        List <Answer> answers;
+        log.debug("#답변검색:{}",questionId.getIdx());
+       answers = answerRepository.findByQuestionIdx(questionId);
+       return AnswerUtils.convertListToMessage(answers);
     }
 }

@@ -22,4 +22,8 @@ public class User {
 	//@JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
 	private List<Question> question;
 */
+
+	public String getUserKey() {
+		return userKey;
+	}
 }

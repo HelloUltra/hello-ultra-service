@@ -74,5 +74,12 @@ public class HelloUltraApplicationTests {
 		Question question = questionRepository.getQuestionDetail(100L);
 		assertNull(question);
 	}
+
+	@Test
+	@Transactional
+	public void 답변검색() throws Exception {
+		messageRequest.setContent("#답변검색 1");
+		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
+	}
 }
 

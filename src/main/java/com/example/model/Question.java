@@ -41,6 +41,10 @@ public class Question {
 	@Column(name="content")
 	private String content;
 
+	public Long getIdx() {
+		return idx;
+	}
+
 	@Override
 	public String toString() {
 		return "[" + idx + "]" + title + "(" + url +")";
