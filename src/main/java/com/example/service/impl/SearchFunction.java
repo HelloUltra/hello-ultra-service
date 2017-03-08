@@ -33,4 +33,14 @@ public class SearchFunction extends Function{
         }
         return QuestionUtils.convertListToMessage(questions);
     }
+
+    @Command("상세보기")
+    public String questionDetail(String tag){
+        log.debug("#상세보기:{}",tag);
+        Question question;
+        if((question=questionRepository.getQuestionDetail(Long.valueOf(tag))) == null) {
+            return "검색 결과가 없습니다.";
+        }
+        return question.getQuestionDetailInfo();
+    }
 }

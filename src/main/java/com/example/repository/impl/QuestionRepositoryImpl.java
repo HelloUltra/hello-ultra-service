@@ -26,4 +26,11 @@ public class QuestionRepositoryImpl extends QueryDslRepositorySupport implements
                 .orderBy(question.idx.desc())
                 .fetch();
     }
+
+    @Override
+    public Question getQuestionDetail(Long idx) {
+        QQuestion question = QQuestion.question;
+        return from(question).where(question.idx.eq(idx)).fetchOne();
+
+    }
 }

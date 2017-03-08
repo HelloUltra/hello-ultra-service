@@ -38,8 +38,16 @@ public class Question {
 	@Column(name="url")
 	private String url;
 
+	@Column(name="content")
+	private String content;
+
 	@Override
 	public String toString() {
 		return "[" + idx + "]" + title + "(" + url +")";
+	}
+
+	//게시물 상세정보 내용.
+	public String getQuestionDetailInfo() {
+		return "title : " + title + "\n" + "내용 : " + content;
 	}
 }

@@ -54,4 +54,24 @@ public class HelloUltraApplicationTests {
 		List<Question> questionList = questionRepository.findTop3QuestionByTagName("없는검색어");
 		assertEquals(0, questionList.size());
 	}
+
+	@Test
+	public void Dispatcher_상세보기() throws Exception {
+		messageRequest.setContent("#상세보기 1");
+		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
+	}
+
+	@Test
+	@Transactional
+	public void QueryDSL_게시물_상세보기_결과_있음() throws Exception {
+		Question question = questionRepository.getQuestionDetail(1L);
+		assertNotNull(question);
+	}
+
+	@Test
+	@Transactional
+	public void QueryDSL_게시물_상세보기_결과_없음() throws Exception {
+		Question question = questionRepository.getQuestionDetail(100L);
+		assertNull(question);
+	}
 }
