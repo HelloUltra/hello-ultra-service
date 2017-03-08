@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface QuestionRepositoryQueryDsl {
     List<Question> findTop3QuestionByTagName(String tagName);
+
+    Question getQuestionDetail(Long idx);
 }
