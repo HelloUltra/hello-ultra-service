@@ -1,8 +1,10 @@
 package com.example;
 
 import com.example.dto.MessageRequest;
+import com.example.model.Answer;
 import com.example.model.Question;
 import com.example.model.Tag;
+import com.example.repository.AnswerRepository;
 import com.example.repository.QuestionRepository;
 import com.example.repository.TagRepository;
 import org.junit.Before;
@@ -26,6 +28,9 @@ public class HelloUltraApplicationTests {
 
 	@Autowired
 	private QuestionRepository questionRepository;
+
+	@Autowired
+	private AnswerRepository answerRepository;
 
 	private MessageRequest messageRequest;
 
@@ -76,10 +81,44 @@ public class HelloUltraApplicationTests {
 	}
 
 	@Test
-	@Transactional
-	public void 답변검색() throws Exception {
+	public void Dispatcher_답변검색() throws Exception {
 		messageRequest.setContent("#답변검색 1");
 		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
+	}
+
+	@Test
+	@Transactional
+	public void QueryDSL_답변_검색_상위_3개() throws Exception {
+		List<Answer> answerList = answerRepository.findTop3AnswerByContent(1L);
+		assertEquals(3, answerList.size());
+		answerList.stream().forEach(System.out::println);
+	}
+
+	@Test
+	@Transactional
+	public void QueryDSL_답변_검색_결과_없음() throws Exception {
+		List<Answer> answerList = answerRepository.findTop3AnswerByContent(100L);
+		assertEquals(0, answerList.size());
+	}
+
+	@Test
+	public void Dispatcher_답변_상세보기() throws Exception {
+		messageRequest.setContent("#답변상세보기 1");
+		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
+	}
+
+	@Test
+	@Transactional
+	public void QueryDSL_답변_상세보기_결과_있음() throws Exception {
+		Answer answer = answerRepository.getAnswerDetail(1L);
+		assertNotNull(answer);
+	}
+
+	@Test
+	@Transactional
+	public void QueryDSL_답변_상세보기_결과_없음() throws Exception {
+		Answer answer = answerRepository.getAnswerDetail(100L);
+		assertNull(answer);
 	}
 }
 

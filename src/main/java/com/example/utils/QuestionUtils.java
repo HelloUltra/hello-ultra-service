@@ -10,7 +10,7 @@ import java.util.List;
 public class QuestionUtils {
     public static String convertListToMessage(List<Question> questions){
         StringBuilder stringBuilder = new StringBuilder();
-        questions.stream().forEach(question -> stringBuilder.append(question).append("\n"));
+        questions.stream().forEach(question -> stringBuilder.append(question.getListQuestionInfo()).append("\n"));
         return stringBuilder.toString();
     }
 }

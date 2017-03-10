@@ -20,13 +20,16 @@ public class Answer {
 
     private String content;
 
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "idx=" + idx +
-                ", writer=" + writer +
-                ", question=" + question +
-                ", content='" + content + '\'' +
-                '}';
+
+    public String getListAnswerInfo() {
+        return "[" + idx + "] " + content;
+    }
+
+    public String getAnswerDetailInfo() {
+        return "[" + idx + "]" + " : "  + content;
+    }
+
+    public String getQuestionTitleInfo() {
+        return question.getQuestionDetailInfo().split("\n")[0];
     }
 }

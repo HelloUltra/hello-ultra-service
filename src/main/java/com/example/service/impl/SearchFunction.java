@@ -44,26 +44,46 @@ public class SearchFunction extends Function{
     }
 
     @Command("상세보기")
-    public String questionDetail(String tag){
-        log.debug("#상세보기:{}",tag);
+    public String questionDetail(String question_idx){
+        log.debug("#상세보기:{}",question_idx);
         Question question;
-        if((question=questionRepository.getQuestionDetail(Long.valueOf(tag))) == null) {
+        if((question=questionRepository.getQuestionDetail(Long.valueOf(question_idx))) == null) {
             return "검색 결과가 없습니다.";
         }
         return question.getQuestionDetailInfo();
     }
 
+//    @Command("답변검색")
+//    public String searchAnswer(String id){
+//        List <Answer> answers;
+//        Long questionId;
+//        questionId = Long.parseLong(id);
+//        Question question = questionRepository.findOne(questionId);
+//        log.debug("#답변검색:{}",question.getIdx());
+//        answers = answerRepository.findByQuestionIdx(question.getIdx());
+//        if(answers==null || answers.size()==0){
+//            return "검색 결과가 없습니다.";
+//        }
+//        return AnswerUtils.convertListToMessage(answers);
+//    }
+
     @Command("답변검색")
-    public String searchAnswer(String id){
-        List <Answer> answers;
-        Long questionId;
-        questionId = Long.parseLong(id);
-        Question question = questionRepository.findOne(questionId);
-        log.debug("#답변검색:{}",question.getIdx());
-        answers = answerRepository.findByQuestionIdx(question.getIdx());
-        if(answers==null || answers.size()==0){
+    public String searchAnswer(String question_idx) {
+        log.debug("#답변검색:{}",question_idx);
+        List<Answer> answers;
+        if((answers = answerRepository.findTop3AnswerByContent(Long.valueOf(question_idx))) == null || answers.size() == 0) {
             return "검색 결과가 없습니다.";
         }
         return AnswerUtils.convertListToMessage(answers);
+    }
+
+    @Command("답변상세보기")
+    public String answerDetail(String answer_idx) {
+        log.debug("#답변상세보기:{}",answer_idx);
+        Answer answer;
+        if((answer = answerRepository.getAnswerDetail(Long.valueOf(answer_idx))) == null ) {
+            return "검색 결과가 없습니다.";
+        }
+        return answer.getAnswerDetailInfo();
     }
 }

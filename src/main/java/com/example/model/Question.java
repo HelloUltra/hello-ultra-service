@@ -36,12 +36,8 @@ public class Question {
 	@OneToMany(mappedBy = "question")
 	private List<Answer> answers;
 
-	public Long getIdx() {
-		return idx;
-	}
-
-	@Override
-	public String toString() {
+	//게시물 상세정보 리스트 내용
+	public String getListQuestionInfo() {
 		return "[" + idx + "]" + title + "(" + url +")";
 	}
 
