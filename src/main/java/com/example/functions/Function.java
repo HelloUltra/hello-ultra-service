@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.functions;
 
 import com.example.MessageDispatcher;
 import com.example.annotations.Command;
