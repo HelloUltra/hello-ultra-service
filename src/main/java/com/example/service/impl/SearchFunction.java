@@ -3,7 +3,6 @@ package com.example.service.impl;
 import com.example.annotations.Command;
 import com.example.model.Answer;
 import com.example.model.Question;
-import com.example.model.User;
 import com.example.repository.AnswerRepository;
 import com.example.repository.QuestionRepository;
 import com.example.repository.UserRepository;

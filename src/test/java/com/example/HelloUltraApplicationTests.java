@@ -80,11 +80,7 @@ public class HelloUltraApplicationTests {
 		assertNull(question);
 	}
 
-	@Test
-	public void Dispatcher_답변검색() throws Exception {
-		messageRequest.setContent("#답변검색 1");
-		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
-	}
+
 
 	@Test
 	@Transactional
