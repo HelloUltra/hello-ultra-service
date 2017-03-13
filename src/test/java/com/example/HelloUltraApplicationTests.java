@@ -1,12 +1,11 @@
+
 package com.example;
 
 import com.example.dto.MessageRequest;
 import com.example.model.Answer;
 import com.example.model.Question;
-import com.example.model.Tag;
 import com.example.repository.AnswerRepository;
 import com.example.repository.QuestionRepository;
-import com.example.repository.TagRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,7 +79,11 @@ public class HelloUltraApplicationTests {
 		assertNull(question);
 	}
 
-
+	@Test
+	public void Dispatcher_답변검색() throws Exception {
+		messageRequest.setContent("#답변검색 1");
+		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
+	}
 
 	@Test
 	@Transactional

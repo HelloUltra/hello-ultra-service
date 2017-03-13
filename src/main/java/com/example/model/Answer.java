@@ -1,10 +1,9 @@
 package com.example.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-public class Answer {
+public class Answer extends Content {
 
     @Id
     @GeneratedValue
@@ -19,17 +18,18 @@ public class Answer {
     private Question question;
 
     private String content;
+/*
+    public String getQuestionTitleInfo() {
+        return question.getQuestionDetailInfo().split("\n")[0];
+    }*/
 
-
-    public String getListAnswerInfo() {
+    @Override
+    public String toShortString() {
         return "[" + idx + "] " + content;
     }
 
-    public String getAnswerDetailInfo() {
+    @Override
+    public String toDetailString() {
         return "[" + idx + "]" + " : "  + content;
-    }
-
-    public String getQuestionTitleInfo() {
-        return question.getQuestionDetailInfo().split("\n")[0];
     }
 }

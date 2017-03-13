@@ -1,0 +1,51 @@
+package com.example.functions.impl;
+
+import com.example.annotations.Command;
+import com.example.functions.Function;
+import com.example.model.Question;
+import com.example.repository.QuestionRepository;
+import com.example.utils.ContentUtils;
+import com.example.utils.IndexUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+/**
+ * Created by YG-MAC on 2017. 3. 11..
+ */
+@Component
+@Transactional
+public class QuestionFunction extends Function {
+
+    private static final Logger log = LoggerFactory.getLogger(QuestionFunction.class);
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Command("검색")
+    public String search(String tag){
+        log.debug("#검색:{}",tag);
+        List<Question> questions;
+        if((questions=questionRepository.findTop3QuestionByTagName(tag)) == null || questions.size() == 0){
+            return "검색 결과가 없습니다.";
+        }
+        return ContentUtils.convertListToMessage(questions);
+    }
+
+    @Command("상세보기")
+    public String questionDetail(String questionIdx){
+        log.debug("#상세보기:{}",questionIdx);
+        if(!IndexUtils.verifyIndex(questionIdx)){
+            return "번호가 올바르지 않습니다.";
+        }
+        Question question;
+        if((question=questionRepository.getQuestionDetail(Long.valueOf(questionIdx))) == null) {
+            return "검색 결과가 없습니다.";
+        }
+        return ContentUtils.convertToMessage(question);
+    }
+}

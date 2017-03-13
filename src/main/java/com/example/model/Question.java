@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-public class Question {
+public class Question extends Content {
 	
 	@Id
 	@GeneratedValue
@@ -20,10 +20,7 @@ public class Question {
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
 	private User writer;
-	
-	/*@Column(name="answers")
-	private List<Answer> answers;
-	*/
+
 	@Column(name="title", nullable=false)
 	private String title;
 	
@@ -36,13 +33,13 @@ public class Question {
 	@OneToMany(mappedBy = "question")
 	private List<Answer> answers;
 
-	//게시물 상세정보 리스트 내용
-	public String getListQuestionInfo() {
+	@Override
+	public String toShortString() {
 		return "[" + idx + "]" + title + "(" + url +")";
 	}
 
-	//게시물 상세정보 내용.
-	public String getQuestionDetailInfo() {
+	@Override
+	public String toDetailString() {
 		return "title : " + title + "\n" + "내용 : " + content;
 	}
 }

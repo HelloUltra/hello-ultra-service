@@ -3,7 +3,7 @@ package com.example;
 import com.example.annotations.Command;
 import com.example.dto.MessageRequest;
 import com.example.dto.MessageResponse;
-import com.example.service.Function;
+import com.example.functions.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,6 +21,9 @@ public class MessageDispatcher {
 	public MessageResponse dispatch(MessageRequest message) {
 		try {
 			Commander commander = functionMap.get(message.command());
+			if(commander == null){
+				return MessageResponse.FAILED;
+			}
 			return  new MessageResponse((String) commander.method.invoke(commander.function, message.keyword()), null, null);
 		} catch(Exception e){
 			log.error("dispatch - {} : {}", message.command(), e);

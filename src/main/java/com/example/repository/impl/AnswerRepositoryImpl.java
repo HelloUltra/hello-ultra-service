@@ -1,8 +1,8 @@
+
 package com.example.repository.impl;
 
 import com.example.model.Answer;
 import com.example.model.QAnswer;
-import com.example.model.QQuestion;
 import com.example.repository.AnswerRepositoryQueryDsl;
 import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 
@@ -33,3 +33,4 @@ public class AnswerRepositoryImpl extends QueryDslRepositorySupport implements A
         return from(answer).where(answer.idx.eq(idx)).fetchOne();
     }
 }
+
