@@ -51,7 +51,16 @@ public class AnswerFunction extends Function {
         }
         return ContentUtils.convertToMessage(answer);
     }
+    @Command("답변등록")
+    public String registerAnswer(String questionIdx){
+        log.debug("#답변할 질문:{}",questionIdx);
+        if(!IndexUtils.verifyIndex(questionIdx)){
+            return "번호가 올바르지 않습니다.";
+        }
+        Answer answer;
 
+        return null;
+    }
     //    @Command("답변검색")
     //    public String searchAnswer(String id){
     //        List <Answer> answers;
