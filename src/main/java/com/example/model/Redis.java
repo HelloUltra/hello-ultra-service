@@ -7,7 +7,23 @@ import java.util.Map;
  */
 public class Redis {
 
-    private String status;
+    private String function;    //호출 메소드명
 
-    private Map<String, String> data;
+    private Map<String, String> param;  //메소드 필요 파람
+
+    public String getFunction() {
+        return function;
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
+    }
+
+    public Map<String, String> getParam() {
+        return param;
+    }
+
+    public void setParam(Map<String, String> param) {
+        this.param = param;
+    }
 }
