@@ -21,13 +21,13 @@ public class RedisConfig {
         return connectionFactory;
     }
 
-//    @Bean
-//    public RedisTemplate<String, Object> redisTemplate() {
-//        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
-//        redisTemplate.setKeySerializer(new StringRedisSerializer());
-//        redisTemplate.setConnectionFactory(connectionFactory());
-//        return redisTemplate;
-//    }
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setConnectionFactory(connectionFactory());
+        return redisTemplate;
+    }
 
     @Bean
     public StringRedisTemplate strRedisTemplate() {
