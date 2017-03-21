@@ -1,5 +1,6 @@
 package com.example.repository.impl;
 
+import com.example.dto.Paging;
 import com.example.model.QQuestion;
 import com.example.model.QTag;
 import com.example.model.Question;
@@ -26,6 +27,19 @@ public class QuestionRepositoryImpl extends QueryDslRepositorySupport implements
                 .orderBy(question.idx.desc())
                 .fetch();
     }
+
+    @Override
+    public List<Question> findListQuestionByTagName(String name, Paging paging) {
+        QQuestion question = QQuestion.question;
+        QTag tag = QTag.tag;
+        return from(question).innerJoin(question.tags, tag)
+                .on(tag.eq(from(tag).where(tag.name.eq(name))))
+                .orderBy(question.idx.desc())
+                .limit(paging.getLimit())
+                .offset(paging.getOffset())
+                .fetch();
+    }
+
 
     @Override
     public Question getQuestionDetail(Long idx) {
