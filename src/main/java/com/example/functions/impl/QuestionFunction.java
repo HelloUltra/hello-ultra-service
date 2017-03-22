@@ -48,4 +48,6 @@ public class QuestionFunction extends Function {
         }
         return ContentUtils.convertToMessage(question);
     }
+
+
 }

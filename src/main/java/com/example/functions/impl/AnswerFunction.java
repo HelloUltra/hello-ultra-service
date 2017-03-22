@@ -52,6 +52,7 @@ public class AnswerFunction extends Function {
         return ContentUtils.convertToMessage(answer);
     }
 
+
     //    @Command("답변검색")
     //    public String searchAnswer(String id){
     //        List <Answer> answers;
