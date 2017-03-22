@@ -31,7 +31,11 @@ public class MainController {
 	public MessageResponse message(@RequestBody MessageRequest message)  {
 		return messageDispatcher.dispatch(message);
 	}
-	
-	
-	
+
+
+	//TODO 미구현.
+	@PostMapping("/talkmessage")
+	public MessageResponse talkmessage(@RequestBody MessageRequest message)  {
+		return messageDispatcher.dispatch(message);
+	}
 }

@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.dto.MessageRequest;
+import com.example.dto.Paging;
 import com.example.model.Answer;
 import com.example.model.Question;
 import com.example.repository.AnswerRepository;
@@ -49,6 +50,18 @@ public class HelloUltraApplicationTests {
 		List<Question> questionList = questionRepository.findTop3QuestionByTagName("테스트");
 		assertEquals(3, questionList.size());
 		questionList.stream().forEach(System.out::println);
+	}
+
+	@Test
+	@Transactional
+	public void QueryDSL_검색_테스트_페이징() throws Exception {
+		Paging paging = new Paging(1);
+		List<Question> questionList = questionRepository.findListQuestionByTagName("테스트", paging);
+		assertEquals(3, questionList.size());
+
+		for(Question question : questionList) {
+			System.out.println(question.toShortString());
+		}
 	}
 
 	@Test
