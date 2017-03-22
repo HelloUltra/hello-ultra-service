@@ -119,6 +119,13 @@ public class HelloUltraApplicationTests {
 	}
 
 	@Test
+	public void Redis_답변등록() throws Exception {
+		//이후 입력어 구조 수정
+		messageRequest.setContent("#답변등록 1");
+		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
+	}
+
+	@Test
 	@Transactional
 	public void QueryDSL_답변_상세보기_결과_있음() throws Exception {
 		Answer answer = answerRepository.getAnswerDetail(1L);

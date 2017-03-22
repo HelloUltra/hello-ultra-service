@@ -10,9 +10,13 @@ import com.example.utils.IndexUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -26,6 +30,15 @@ public class AnswerFunction extends Function {
 
     @Autowired
     private AnswerRepository answerRepository;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Resource(name="strRedisTemplate")
+    private ListOperations<String, String> listOperations;
+
+    @Resource(name="strRedisTemplate")
+    private SetOperations<String, String> setOperations;
 
     @Command("답변검색")
     public String searchAnswer(String questionIdx) {
@@ -52,15 +65,17 @@ public class AnswerFunction extends Function {
         }
         return ContentUtils.convertToMessage(answer);
     }
-    @Command("답변등록")
-    public String registerAnswer(String questionIdx){
-        log.debug("#답변할 질문:{}",questionIdx);
-        if(!IndexUtils.verifyIndex(questionIdx)){
-            return "번호가 올바르지 않습니다.";
-        }
-        Answer answer;
 
-        return null;
+    @Command("답변등록")
+    public String registerAnswer(String user_key){
+        user_key = "1";
+        //enum정의하여 처리할 부분
+        String status="REGISTER_ANSWER";
+
+        log.info("push user_key : {}, value : {}", user_key, status);
+        listOperations.rightPush(user_key, status);
+
+        return "답변하실 질문번호를 입력해주세요";
     }
     //    @Command("답변검색")
     //    public String searchAnswer(String id){
