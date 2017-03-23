@@ -4,11 +4,14 @@ import com.example.annotations.Command;
 import com.example.dto.MessageRequest;
 import com.example.dto.MessageResponse;
 import com.example.functions.Function;
+import com.example.functions.impl.HelloUltraFunction;
+import com.example.functions.impl.RedisFunction;
 import com.example.model.Redis;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.service.QuestionService;
+import com.example.utils.CustomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -17,6 +20,16 @@ import java.util.Map;
 
 @Component
 public class MessageDispatcher {
+
+	@Autowired
+	private RedisFunction redisFunction;
+
+	@Autowired
+	private QuestionService questionService;
+
+	@Autowired
+	private HelloUltraFunction helloUltraFunction;
+
 	private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
 
 	private Map<String, Commander<?>> functionMap = new HashMap<>();
@@ -51,27 +64,42 @@ public class MessageDispatcher {
 
 
 	public MessageResponse redisDispatch(MessageRequest message) {
-		log.debug("redisDispatch start");
-		//TODO redis 조회 (AOP?)
+		log.debug("redisDispatch start user_key : {} , message : {}", message.getUser_key() ,message.getContent());
 
-		//Object to jsonString test
-		Redis redis = new Redis();
+		//최초 redis pop
+		String value = redisFunction.pop(message.getUser_key());
+		log.debug("value : {}", value);
 
-		Map<String, String> param = new HashMap<>();
-		param.put("content", "hello spring boot");
-		param.put("page", "0");
-		redis.setParam(param);
-
-		redis.setFunction("search");	//호출 메소드
-
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = null;
-		try {
-			 jsonInString = mapper.writeValueAsString(redis);
-			log.debug("jsonInString : {}", jsonInString);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+		if(value == null && message.getContent().equals("검색")) {
+			//최초 검색입력시 redis push
+			Redis redis = new Redis();
+			redis.setFunction("search");
+			redisFunction.push(message.getUser_key(), CustomUtil.objectToString(redis));
+			return new MessageResponse("검색어를 입력하세요.", null, null);
 		}
-		return null;
+
+		//일반단어가 들어왔을경우
+		Redis redis = CustomUtil.stringToObject(value);
+		String resultMessage = null;
+		switch (redis.getFunction()) {
+			case "search" :
+				resultMessage = helloUltraFunction.search(message, redis);
+				break;
+			case "questionDetail" :	//질문상세보기 일경우.
+
+				break;
+			case "searchAnswer" :
+
+				break;
+			case "answerDetail" :
+
+				break;
+			default :
+
+				break;
+		}
+		log.debug("redis function : {}, param : {}", redis.getFunction(), redis.getParam().toString());
+
+		return new MessageResponse(resultMessage, null, null);
 	}
 }

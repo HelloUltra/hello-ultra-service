@@ -138,5 +138,57 @@ public class HelloUltraApplicationTests {
 		Answer answer = answerRepository.getAnswerDetail(100L);
 		assertNull(answer);
 	}
+
+
+
+
+	//redis test 진행.
+	//redis 명령어. key * //모든 key 리스트 보기.
+	//            lrange 123 0 100 //key : 123, 0 ~ 100 까지 리스트 보기.
+	//            del 123 // key : 123 삭제.
+	@Test
+	public void Dispatcher_Redis_검색() throws Exception {
+		messageRequest.setContent("검색");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+	}
+
+	@Test
+	public void Dispatcher_Redis_단어검색() throws Exception {
+		messageRequest.setContent("테스트");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+//		2) "{\"function\":\"search\",\"param\":{\"page\":\"1\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
+	}
+
+	@Test
+	public void Dispatcher_Redis_더보기() throws Exception {
+		messageRequest.setContent("더보기");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+//		2) "{\"function\":\"search\",\"param\":{\"page\":\"2\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
+	}
+
+	@Test
+	public void Dispatcher_Redis_뒤로가기() throws Exception {
+		messageRequest.setContent("뒤로가기");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+//		2) "{\"function\":\"search\",\"param\":{\"page\":\"1\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
+	}
+
+	@Test
+	public void Dispatcher_Redis_상세보기() throws Exception {
+		messageRequest.setContent("1");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+//		2) "{\"function\":\"search\",\"param\":{\"page\":\"1\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
+//		3) "{\"function\":\"questionDetail\",\"param\":{\"questionIdx\":\"1\"}}"
+	}
 }
 

@@ -31,13 +31,13 @@ public class RedisFunction {
     //마지막 value pop
     public String pop(String user_key) {
         String value = listOperations.rightPop(user_key);
-        log.debug("value : {} ", value);
+        log.debug("RedisFunction pop userKey : {}, value : {} ", user_key, value);
         return value;
     }
 
     //value push
     public void push(String user_key, String value) {
-        log.info("push user_key : {}, value : {}", user_key, value);
+        log.debug("RedisFunction push userKey : {}, value : {} ", user_key, value);
         listOperations.rightPush(user_key, value);
     }
 

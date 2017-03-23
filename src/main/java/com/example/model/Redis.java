@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -9,7 +10,7 @@ public class Redis {
 
     private String function;    //호출 메소드명
 
-    private Map<String, String> param;  //메소드 필요 파람
+    private Map<String, String> param = new HashMap<>();  //메소드 필요 파람
 
     public String getFunction() {
         return function;
