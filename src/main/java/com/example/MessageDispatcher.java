@@ -78,7 +78,7 @@ public class MessageDispatcher {
 			return new MessageResponse("검색어를 입력하세요.", null, null);
 		}
 
-		//일반단어가 들어왔을경우
+		//redis 마지막 상태값에 따라 다음 명령어가 결정된다.
 		Redis redis = CustomUtil.stringToObject(value);
 		String resultMessage = null;
 		switch (redis.getFunction()) {
