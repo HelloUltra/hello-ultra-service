@@ -85,13 +85,14 @@ public class MessageDispatcher {
 			case "search" :
 				resultMessage = helloUltraFunction.search(message, redis);
 				break;
-			case "questionDetail" :	//질문상세보기 일경우.
-
+			case "questionDetail" :
+				resultMessage = helloUltraFunction.questionDetail(message, redis);
 				break;
 			case "searchAnswer" :
-
+				resultMessage = helloUltraFunction.searchAnswer(message, redis);
 				break;
 			case "answerDetail" :
+
 
 				break;
 			default :

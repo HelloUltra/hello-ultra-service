@@ -190,5 +190,14 @@ public class HelloUltraApplicationTests {
 //		2) "{\"function\":\"search\",\"param\":{\"page\":\"1\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
 //		3) "{\"function\":\"questionDetail\",\"param\":{\"questionIdx\":\"1\"}}"
 	}
+
+	@Test
+	public void Dispatcher_Redis_답변검색() throws Exception {
+		messageRequest.setContent("답변검색");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+	}
+
+
 }
 
