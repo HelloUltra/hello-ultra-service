@@ -30,9 +30,6 @@ public class HelloUltraFunction {
 
     //검색
     public String search(MessageRequest message, Redis redis) {
-        //전단계에서 pop 한걸 다시 push 하여야한다. (시작하자마자 상태값을 보기 위해 pop하였기 때문에)
-        redisFunction.push(message.getUser_key(), CustomUtil.objectToString(redis));
-
         log.debug("HelloUltraFunction search start");
         log.debug("message : {}, redisFunction : {}, redisParam : {}", message.getContent(), redis.getFunction(), redis.getParam().toString());
         String resultMsg = null;
@@ -114,9 +111,6 @@ public class HelloUltraFunction {
 
     //질문상세보기
     public String questionDetail(MessageRequest message, Redis redis) {
-        //전단계에서 pop 한걸 다시 push 하여야한다. (시작하자마자 상태값을 보기 위해 pop하였기 때문에)
-        redisFunction.push(message.getUser_key(), CustomUtil.objectToString(redis));
-
         log.debug("HelloUltraFunction questionDetail start");
         log.debug("message : {}, redisFunction : {}, redisParam : {}", message.getContent(), redis.getFunction(), redis.getParam().toString());
 
@@ -149,13 +143,9 @@ public class HelloUltraFunction {
 
     //답변검색
     public String searchAnswer(MessageRequest message, Redis redis) {
-        //전단계에서 pop 한걸 다시 push 하여야한다. (시작하자마자 상태값을 보기 위해 pop하였기 때문에)
-        redisFunction.push(message.getUser_key(), CustomUtil.objectToString(redis));
-
         log.debug("HelloUltraFunction searchAnswer start");
         log.debug("message : {}, redisFunction : {}, redisParam : {}", message.getContent(), redis.getFunction(), redis.getParam().toString());
         String resultMsg = null;
-
 
         //다음 액션이 상세보기, 더보기, 뒤로가기가 있다.
         switch (message.getContent()) {

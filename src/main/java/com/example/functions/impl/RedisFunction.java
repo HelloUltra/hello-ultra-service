@@ -41,6 +41,13 @@ public class RedisFunction {
         listOperations.rightPush(user_key, value);
     }
 
+    //마지막 value 읽기
+    public String getLastValue(String user_key) {
+        String value = listOperations.index(user_key, listOperations.size(user_key) - 1);
+        log.debug("RedisFunction getLastValue userKey : {}, value : {} ", user_key, value);
+        return value;
+    }
+
     //key 삭제
     public void delete(String user_key) {
         redisTemplate.opsForValue().getOperations().delete(user_key);

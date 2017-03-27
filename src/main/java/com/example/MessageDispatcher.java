@@ -62,12 +62,11 @@ public class MessageDispatcher {
 		}
 	}
 
-
 	public MessageResponse redisDispatch(MessageRequest message) {
 		log.debug("redisDispatch start user_key : {} , message : {}", message.getUser_key() ,message.getContent());
 
 		//최초 redis pop
-		String value = redisFunction.pop(message.getUser_key());
+		String value = redisFunction.getLastValue(message.getUser_key());
 		log.debug("value : {}", value);
 
 		if(value == null && message.getContent().equals("검색")) {

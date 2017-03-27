@@ -198,6 +198,20 @@ public class HelloUltraApplicationTests {
 		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
 	}
 
+	@Test
+	public void Dispatcher_Redis_뒤로() throws Exception {
+		messageRequest.setContent("뒤로");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+	}
+
+	@Test
+	public void Dispatcher_Redis_다시() throws Exception {
+		messageRequest.setContent("다시");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+	}
+
 
 }
 

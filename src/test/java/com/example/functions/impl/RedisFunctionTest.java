@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class RedisFunctionTest {
 
-    private final String user_key = "1";
+    private final String user_key = "123";
 
     @Autowired
     private RedisFunction redisFunction;
@@ -41,5 +41,10 @@ public class RedisFunctionTest {
     @Test
     public void delete() throws Exception {
         redisFunction.delete(user_key);
+    }
+
+    @Test
+    public void getLastValue() throws Exception {
+        redisFunction.getLastValue(user_key);
     }
 }
