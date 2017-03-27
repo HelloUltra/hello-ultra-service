@@ -29,7 +29,7 @@ public class AspectConfig {
     //최상위 예약어 처리 ex) 뒤로, 다시
     @Around("execution(* com..*MessageDispatcher.redisDispatch(..))")
     private Object checkReservedWords(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("AOP checkCookie start");
+        log.debug("AOP checkReservedWords start");
 
         Object[] args = joinPoint.getArgs();
         MessageRequest messageRequest = (MessageRequest) args[0];
@@ -37,6 +37,7 @@ public class AspectConfig {
         String resultMsg = null;
         switch (messageRequest.getContent()) {
             case "뒤로" : //redis pop 한 후 메소드 호출
+                //TODO
                 String value = redisFunction.pop(messageRequest.getUser_key());
 
                 if(value == null) {
@@ -48,7 +49,7 @@ public class AspectConfig {
                 break;
             case "다시" : //redis 모두 삭제
                 redisFunction.delete(messageRequest.getUser_key());
-                break;
+                return new MessageResponse(resultMsg, null, null);
             default :
                 return joinPoint.proceed();
         }

@@ -9,6 +9,7 @@ package com.example.service;
 import com.example.annotations.Command;
 import com.example.dto.Paging;
 import com.example.functions.impl.AnswerFunction;
+import com.example.message.Message;
 import com.example.model.Answer;
 import com.example.repository.AnswerRepository;
 import com.example.utils.ContentUtils;
@@ -33,11 +34,11 @@ public class AnswerService {
 
     public String searchAnswer(String questionIdx, Integer pageNum) {
         if(!IndexUtils.verifyIndex(questionIdx)){
-            return "번호가 올바르지 않습니다.";
+            return Message.WRONG_NUMBER;
         }
         List<Answer> answers;
         if((answers = answerRepository.findListAnswerByContent(Long.valueOf(questionIdx), new Paging(pageNum))) == null || answers.size() == 0) {
-            return "검색 결과가 없습니다.";
+            return Message.NO_DB_DATA;
         }
         return ContentUtils.convertListToMessage(answers);
     }
@@ -45,11 +46,11 @@ public class AnswerService {
 
     public String answerDetail(String answerIdx) {
         if(!IndexUtils.verifyIndex(answerIdx)){
-            return "번호가 올바르지 않습니다.";
+            return Message.WRONG_NUMBER;
         }
         Answer answer;
         if((answer = answerRepository.getAnswerDetail(Long.valueOf(answerIdx))) == null ) {
-            return "검색 결과가 없습니다.";
+            return Message.NO_DB_DATA;
         }
         return ContentUtils.convertToMessage(answer);
     }
@@ -57,7 +58,7 @@ public class AnswerService {
 
     public String registerAnswer(String questionIdx){
         if(!IndexUtils.verifyIndex(questionIdx)){
-            return "번호가 올바르지 않습니다.";
+            return Message.WRONG_NUMBER;
         }
         Answer answer;
 

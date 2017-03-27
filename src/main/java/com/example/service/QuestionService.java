@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.annotations.Command;
 import com.example.dto.Paging;
+import com.example.message.Message;
 import com.example.model.Question;
 import com.example.repository.QuestionRepository;
 import com.example.utils.ContentUtils;
@@ -25,25 +26,25 @@ public class QuestionService {
     private QuestionRepository questionRepository;
 
     public String search(){
-        return "검색어를 입력하세요";
+        return Message.EMPTY_SEARCH_MESSAGE;
     }
 
     public String search(String content, Integer pageNum){
         log.debug("검색:{}, page:{}",content, pageNum);
         List<Question> questions;
         if((questions = questionRepository.findListQuestionByTagName(content, new Paging(pageNum))) == null || questions.size() == 0){
-            return "검색 결과가 없습니다.";
+            return Message.NO_DB_DATA;
         }
         return ContentUtils.convertListToMessage(questions);
     }
 
     public String questionDetail(String questionIdx){
         if(!IndexUtils.verifyIndex(questionIdx)){
-            return "번호가 올바르지 않습니다.";
+            return Message.WRONG_NUMBER;
         }
         Question question;
         if((question=questionRepository.getQuestionDetail(Long.valueOf(questionIdx))) == null) {
-            return "검색 결과가 없습니다.";
+            return Message.NO_DB_DATA;
         }
         return ContentUtils.convertToMessage(question);
     }

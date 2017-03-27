@@ -2,6 +2,7 @@ package com.example.functions.impl;
 
 import com.example.dto.MessageRequest;
 import com.example.dto.Param;
+import com.example.message.Message;
 import com.example.model.Redis;
 import com.example.service.AnswerService;
 import com.example.service.QuestionService;
@@ -36,7 +37,7 @@ public class HelloUltraFunction {
         //param 이 비어있을경우 검색 준비상태
         if(redis.getParam().isEmpty()) {
             resultMsg = questionService.search(message.getContent(), 1);
-            if(!resultMsg.equals("검색 결과가 없습니다.")) {
+            if(!Message.NO_DB_DATA.equals(resultMsg)) {
                 //검색결과가 있으면 redis push 후 종료.
                 Redis rs = CustomUtil.paramToObject("search"
                         , new Param("content", message.getContent())
@@ -54,7 +55,7 @@ public class HelloUltraFunction {
                 int addPage = Integer.valueOf(redis.getParam().get("page")) + 1;
                 resultMsg = questionService.search(redis.getParam().get("content"), addPage);
 
-                if(resultMsg.equals("검색 결과가 없습니다.")) {
+                if(Message.NO_DB_DATA.equals(resultMsg)) {
                     break;
                 }
 
@@ -78,7 +79,7 @@ public class HelloUltraFunction {
                 int delPage = Integer.valueOf(redis.getParam().get("page")) - 1;
                 resultMsg = questionService.search(redis.getParam().get("content"), delPage);
 
-                if(resultMsg.equals("검색 결과가 없습니다.")) {
+                if(Message.NO_DB_DATA.equals(resultMsg)) {
                     break;
                 }
                 //검색결과 있을경우 -1 page 적재.
@@ -94,7 +95,7 @@ public class HelloUltraFunction {
                 //질문 상세보기 진행.
                 log.debug("상세보기 진행");
                 resultMsg = questionService.questionDetail(message.getContent());
-               if("검색 결과가 없습니다.".equals(resultMsg) || "번호가 올바르지 않습니다.".equals(resultMsg)) {
+               if(Message.NO_DB_DATA.equals(resultMsg) || Message.WRONG_NUMBER.equals(resultMsg)) {
                     break;
                 }
                 //검색결과가 있을경우 redis push 기존 value 와 함께
@@ -123,7 +124,7 @@ public class HelloUltraFunction {
 
                 resultMsg = answerService.searchAnswer(redis.getParam().get("questionIdx"), 1);
 
-                if(resultMsg.equals("검색 결과가 없습니다.") || resultMsg.equals("번호가 올바르지 않습니다.")) {
+                if(Message.NO_DB_DATA.equals(resultMsg) || Message.WRONG_NUMBER.equals(resultMsg)) {
                     break;
                 }
 
@@ -155,7 +156,7 @@ public class HelloUltraFunction {
                 int addPage = Integer.valueOf(redis.getParam().get("page")) + 1;
                 resultMsg = answerService.searchAnswer(redis.getParam().get("content"), addPage);
 
-                if(resultMsg.equals("검색 결과가 없습니다.")) {
+                if(Message.NO_DB_DATA.equals(resultMsg)) {
                     break;
                 }
 
@@ -169,14 +170,14 @@ public class HelloUltraFunction {
                 log.debug("뒤로가기 진행");
                 //페이지 +1 진행 후 검색, 레디스 적재.
                 if(Integer.valueOf(redis.getParam().get("page")) < 2) {
-                    resultMsg ="뒤로이동 할 수 없습니다.";
+                    resultMsg = Message.NOT_MOVE_BACK;
                     break;
                 }
 
                 int delPage = Integer.valueOf(redis.getParam().get("page")) - 1;
                 resultMsg = answerService.searchAnswer(redis.getParam().get("content"), delPage);
 
-                if(resultMsg.equals("검색 결과가 없습니다.")) {
+                if(Message.NO_DB_DATA.equals(resultMsg)) {
                     break;
                 }
                 //검색결과 있을경우 -1 page 적재.
@@ -188,7 +189,7 @@ public class HelloUltraFunction {
                 //질문 상세보기 진행.
                 log.debug("상세보기 진행");
                 resultMsg = answerService.answerDetail(message.getContent());
-                if("검색 결과가 없습니다.".equals(resultMsg) || "번호가 올바르지 않습니다.".equals(resultMsg)) {
+                if(Message.NO_DB_DATA.equals(resultMsg) || Message.WRONG_NUMBER.equals(resultMsg)) {
                     break;
                 }
                 //검색결과가 있을경우 redis push 기존 value 와 함께
