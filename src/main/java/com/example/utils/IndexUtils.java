@@ -7,6 +7,6 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class IndexUtils {
     public static boolean verifyIndex(String index) {
-        return !StringUtils.isEmpty(index) || StringUtils.isNumeric(index);
+        return !StringUtils.isEmpty(index) && StringUtils.isNumeric(index);
     }
 }

@@ -30,4 +30,5 @@ public class MessageRequest {
 	public String keyword(){
 		return this.content.substring(command().length()+1, this.content.length());
 	}
+
 }

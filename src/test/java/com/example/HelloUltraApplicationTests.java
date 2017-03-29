@@ -1,7 +1,7 @@
-
 package com.example;
 
 import com.example.dto.MessageRequest;
+import com.example.dto.Paging;
 import com.example.model.Answer;
 import com.example.model.Question;
 import com.example.repository.AnswerRepository;
@@ -54,6 +54,18 @@ public class HelloUltraApplicationTests {
 		List<Question> questionList = questionRepository.findTop3QuestionByTagName("테스트");
 		assertEquals(3, questionList.size());
 		questionList.stream().forEach(System.out::println);
+	}
+
+	@Test
+	@Transactional
+	public void QueryDSL_검색_테스트_페이징() throws Exception {
+		Paging paging = new Paging(1);
+		List<Question> questionList = questionRepository.findListQuestionByTagName("테스트", paging);
+		assertEquals(3, questionList.size());
+
+		for (Question question : questionList) {
+			System.out.println(question.toShortString());
+		}
 	}
 
 	@Test
@@ -111,6 +123,13 @@ public class HelloUltraApplicationTests {
 	}
 
 	@Test
+	public void Redis_답변등록() throws Exception {
+		//이후 입력어 구조 수정
+		messageRequest.setContent("#답변등록 1");
+		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
+	}
+
+	@Test
 	@Transactional
 	public void QueryDSL_답변_상세보기_결과_있음() throws Exception {
 		Answer answer = answerRepository.getAnswerDetail(1L);
@@ -124,96 +143,75 @@ public class HelloUltraApplicationTests {
 		assertNull(answer);
 	}
 
-	/*@Test
-	@Transactional
-	public void 답변등록() throws Exception {
-		messageRequest.setContent("#답변등록 1");
-		System.out.println(messageDispatcher.dispatch(messageRequest).getText());
-	}*/
-
-	@Before
-	public void init() {
-		//list put
-		listOperations.rightPush("test:task", "자기소개");
-		listOperations.rightPush("test:task", "취미소개");
-		listOperations.rightPush("test:task", "소망소개");
-		listOperations.rightPush("test:task", "선임이직");
-		//hash put
-		hashOperations.put("test:user:kingbbode", "name", "권뽀대");
-		hashOperations.put("test:user:kingbbode", "age", "28");
-		//set put
-		setOperations.add("test:user:kingbbode:hobby", "개발");
-		setOperations.add("test:user:kingbbode:hobby", "잠");
-		setOperations.add("test:user:kingbbode:hobby", "옷 구경");
-		//zset
-		zSetOperations.add("test:user:kingbbode:wish", "배포한 것에 장애없길", 1);
-		zSetOperations.add("test:user:kingbbode:wish", "배포한거 아니여도 장애없길", 2);
-		zSetOperations.add("test:user:kingbbode:wish", "경력직 채용", 3);
-		zSetOperations.add("test:user:kingbbode:wish", "잘자기", 4);
+	//redis test 진행.
+	//redis 명령어. key * //모든 key 리스트 보기.
+	//            lrange 123 0 100 //key : 123, 0 ~ 100 까지 리스트 보기.
+	//            del 123 // key : 123 삭제.
+	@Test
+	public void Dispatcher_Redis_검색() throws Exception {
+		messageRequest.setContent("검색");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
 	}
-
-	@Resource(name="redisTemplate")
-	private ValueOperations<String, String> valueOperations;
-
-	@Resource(name = "redisTemplate")
-	private ListOperations<String, String> listOperations;
-
-	@Resource(name = "redisTemplate")
-	private HashOperations<String, String, String> hashOperations;
-
-	@Resource(name = "redisTemplate")
-	private SetOperations<String, String> setOperations;
-
-	@Resource(name="redisTemplate")
-	private ZSetOperations<String, String> zSetOperations;
 
 	@Test
-	public void redisTest1() {
-		String task = listOperations.leftPop("test:task");
-		StringBuilder stringBuilder = new StringBuilder();
-		while (task != null) {
-			switch (task) {
-				case "자기소개":
-					Map<String, String> intro = hashOperations.entries("test:user:kingbbode");
-					stringBuilder.append("\n******자기소개********");
-					stringBuilder.append("\n이름은 ");
-					stringBuilder.append(intro.get("name"));
-					stringBuilder.append("\n나이는 ");
-					stringBuilder.append(intro.get("age"));
-					break;
-				case "취미소개":
-					Set<String> hobbys = setOperations.members("test:user:kingbbode:hobby");
-					stringBuilder.append("\n******취미소개******");
-					stringBuilder.append("취미는");
-					for (String hobby : hobbys) {
-						stringBuilder.append("\n");
-						stringBuilder.append(hobby);
-					}
-					break;
-				case "소망소개":
-					Set<String> wishes = zSetOperations.range("test:user:kingbbode:wish", 0, 2);
-					stringBuilder.append("\n******소망소개******");
-					int rank = 1;
-					for (String wish : wishes){
-						stringBuilder.append("\n");
-						stringBuilder.append(rank);
-						stringBuilder.append("등 ");
-						stringBuilder.append(wish);
-						rank++;
-					}
-					break;
-				case "선임이직":
-					stringBuilder.append("\n!!! 믿었던 선임 이직");
-					zSetOperations.incrementScore("test:user:kingbbode:wish", "경력직 채용", -1);
-					listOperations.rightPush("test:task", "소망소개");
-					break;
-				default:
-					stringBuilder.append("nonone");
-
-			}
-			task = listOperations.leftPop("test:task");
-		}
-		System.out.println(stringBuilder.toString());
+	public void Dispatcher_Redis_단어검색() throws Exception {
+		messageRequest.setContent("테스트");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+//		2) "{\"function\":\"search\",\"param\":{\"page\":\"1\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
 	}
+
+	@Test
+	public void Dispatcher_Redis_더보기() throws Exception {
+		messageRequest.setContent("더보기");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+//		2) "{\"function\":\"search\",\"param\":{\"page\":\"2\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
+	}
+
+	@Test
+	public void Dispatcher_Redis_뒤로가기() throws Exception {
+		messageRequest.setContent("뒤로가기");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+//		2) "{\"function\":\"search\",\"param\":{\"page\":\"1\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
+	}
+
+	@Test
+	public void Dispatcher_Redis_상세보기() throws Exception {
+		messageRequest.setContent("1");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+//		1) "{\"function\":\"search\",\"param\":{}}"
+//		2) "{\"function\":\"search\",\"param\":{\"page\":\"1\",\"content\":\"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8\"}}"
+//		3) "{\"function\":\"questionDetail\",\"param\":{\"questionIdx\":\"1\"}}"
+	}
+
+	@Test
+	public void Dispatcher_Redis_답변검색() throws Exception {
+		messageRequest.setContent("답변검색");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+	}
+
+	@Test
+	public void Dispatcher_Redis_뒤로() throws Exception {
+		messageRequest.setContent("뒤로");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+	}
+
+	@Test
+	public void Dispatcher_Redis_다시() throws Exception {
+		messageRequest.setContent("다시");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+	}
+
 }
 
