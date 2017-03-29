@@ -16,6 +16,7 @@ import java.util.Map;
 public class MessageDispatcher {
 	private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
 
+
 	private Map<String, Commander<?>> functionMap = new HashMap<>();
 
 	public MessageResponse dispatch(MessageRequest message) {
