@@ -23,6 +23,28 @@ public class Answer extends Content {
         return question.getQuestionDetailInfo().split("\n")[0];
     }*/
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setWriter(User writer) {
+        this.writer = writer;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "idx=" + idx +
+                ", writer=" + writer +
+                ", question=" + question +
+                ", content='" + content + '\'' +
+                '}';
+    }
+
     @Override
     public String toShortString() {
         return "[" + idx + "] " + content;

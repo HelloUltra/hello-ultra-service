@@ -92,8 +92,9 @@ public class MessageDispatcher {
 				resultMessage = helloUltraFunction.searchAnswer(message, redis);
 				break;
 			case "answerDetail" :
-
-
+				break;
+			case "registerAnswer" :
+				resultMessage = helloUltraFunction.registerAnswer(message, redis);
 				break;
 			default :
 

@@ -7,11 +7,14 @@
 package com.example.service;
 
 import com.example.annotations.Command;
+import com.example.dto.MessageRequest;
 import com.example.dto.Paging;
 import com.example.functions.impl.AnswerFunction;
 import com.example.message.Message;
 import com.example.model.Answer;
 import com.example.repository.AnswerRepository;
+import com.example.repository.QuestionRepository;
+import com.example.repository.UserRepository;
 import com.example.utils.ContentUtils;
 import com.example.utils.IndexUtils;
 import org.slf4j.Logger;
@@ -31,6 +34,12 @@ public class AnswerService {
 
     @Autowired
     private AnswerRepository answerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
 
     public String searchAnswer(String questionIdx, Integer pageNum) {
         if(!IndexUtils.verifyIndex(questionIdx)){
@@ -56,12 +65,17 @@ public class AnswerService {
     }
 
 
-    public String registerAnswer(String questionIdx){
+    public String registerAnswer(String questionIdx, MessageRequest message){
         if(!IndexUtils.verifyIndex(questionIdx)){
             return Message.WRONG_NUMBER;
         }
-        Answer answer;
+        Answer answer = new Answer();
+        answer.setWriter(userRepository.findByUserKey(message.getUser_key()));
+        answer.setContent(message.getContent());
+        answer.setQuestion(questionRepository.findOne(Long.valueOf(questionIdx)));
+        log.debug(answer.toString());
+        answerRepository.save(answer);
 
-        return null;
+        return "답변이 정상적으로 등록되었습니다";
     }
 }

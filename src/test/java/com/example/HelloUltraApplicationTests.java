@@ -213,5 +213,19 @@ public class HelloUltraApplicationTests {
 		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
 	}
 
+	@Test
+	public void Dispatcher_Redis_답변등록() throws Exception{
+		messageRequest.setContent("답변등록");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+	}
+
+	@Test
+	public void Dispatcher_Redis_내용등록() throws Exception{
+		messageRequest.setContent("답변등록테스트");
+		messageRequest.setUser_key("123");
+		System.out.println(messageDispatcher.redisDispatch(messageRequest).getText());
+	}
+
 }
 

@@ -119,6 +119,7 @@ public class HelloUltraFunction {
 
         //전 상태값이 questionDetail 일경우 답변검색 입력가능
         switch (message.getContent()) {
+
             case "답변검색" :
                 log.debug("답변검색 진행");
 
@@ -135,11 +136,24 @@ public class HelloUltraFunction {
                 redisFunction.push(message.getUser_key(), CustomUtil.objectToString(rs));
 
                 break;
+            case "답변등록" :
+                log.debug("답변등록 진행");
+                 Redis rs1 = CustomUtil.paramToObject("registerAnswer"
+                        , new Param("questionIdx", redis.getParam().get("questionIdx"))
+                        , new Param("page","1"));
+                redisFunction.push(message.getUser_key(), CustomUtil.objectToString(rs1));
+                log.debug("registerAnswer - message : {}, redisFunction : {}, redisParam : {}", message.getContent(), redis.getFunction(), redis.getParam().toString());
+                resultMsg = "답변을 입력해주세요";
+                break;
 
             default :
                 //resultMsg = null;
         }
         return resultMsg;
+    }
+
+    public String registerAnswer(MessageRequest message, Redis redis){
+        return answerService.registerAnswer(redis.getParam().get("questionIdx"), message);
     }
 
     //답변검색
@@ -198,6 +212,7 @@ public class HelloUltraFunction {
         }
         return resultMsg;
     }
+
 
     //답변상세보기
 //    public String answerDetail() {
