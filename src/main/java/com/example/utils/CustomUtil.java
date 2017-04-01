@@ -1,8 +1,7 @@
 package com.example.utils;
 
-import com.example.dto.Paging;
 import com.example.dto.Param;
-import com.example.model.Redis;
+import com.example.model.ConversationInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -19,7 +18,7 @@ public class CustomUtil {
 
     private static final Logger log = LoggerFactory.getLogger(CustomUtil.class);
 
-    public static String objectToString(Redis redis) {
+    public static String objectToString(ConversationInfo redis) {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = "";
 		try {
@@ -31,19 +30,19 @@ public class CustomUtil {
         return jsonString;
     }
 
-    public static Redis stringToObject(String str) {
+    public static ConversationInfo stringToObject(String str) {
         ObjectMapper mapper = new ObjectMapper();
-        Redis redis = new Redis();
+        ConversationInfo redis = new ConversationInfo();
         try {
-            redis = mapper.readValue(str, Redis.class);
+            redis = mapper.readValue(str, ConversationInfo.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return redis;
     }
 
-    public static Redis paramToObject(String function, Param... params) {
-        Redis redis = new Redis();
+    public static ConversationInfo paramToObject(String function, Param... params) {
+        ConversationInfo redis = new ConversationInfo();
         redis.setFunction(function);
 
         Map<String, String> map = new HashMap<>();

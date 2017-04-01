@@ -16,7 +16,7 @@ public class Function {
 
     @PostConstruct
     public void init(){
-        Arrays.asList(this.getClass().getMethods()).stream()
+        Arrays.stream(this.getClass().getMethods())
                 .filter(method -> method.isAnnotationPresent(Command.class))
                 .forEach(method -> messageDispatcher.put(this, method));
     }

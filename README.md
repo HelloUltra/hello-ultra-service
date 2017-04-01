@@ -69,7 +69,7 @@ batch : 익명 사용자의 데이터를 가입된 사용자 데이터로 전환
 
 ---
 
-# 대화형 설계
+# 대화형
 
 ```java
 //시작점 예약어
@@ -104,12 +104,12 @@ public void detail(com.example.dto.MessageRequest messageRequest){
 
 ```
 
-# 데이터 구조
+## Command 정보 구조
 
 ```java
 
 //Command당 하나(ex : search1)
-class Conv {
+class Conversation {
     String function;
     //search1
     
@@ -129,56 +129,101 @@ class Conv {
     }
 }
 
-//Function 캐시
-Map<String, Functional> functions;
-//search, Object
-//search1, Object
-//search2, Object
-//search3, Object
-//detail, Object
+/** 
+@key : 대화형 시작점 예약어
+@value : function key
+*/
+private Map<String, String> startMap = new HashMap<>();
+// ex) "#검색" , "search"
 
-Map<String, Conv> convs;
-//search, conv
-//search1, conv
-//search2, conv
-//search3, conv
-//detail, conv
+/** 
+@key : function key
+@value : Commander class
+*/
+private Map<String, Commander<?>> commanderMap = new HashMap<>();
+// ex)  "search" , Commander
+//      "search1" , Commander
+//      "search2" , Commander
+//      "search3" , Commander
+//      "detail" , Commander
 
-```
-
-- `#검색`
-
-```java
-Conv conv =command1.get(command)
-
-//레디스 조회
-//redis = null
-
-//실행
-functions.get(conv.getFunction()).execute(MessageRequest, redis);
-
-//레디스 저장
-redis.initset(conv.getFunction());
-//{function : "search", param : null }
+/** 
+@key : function key
+@value : Conversation class
+*/
+Map<String, Conversation> conversationMap = new HashMap<>();
+//search, Conversation
+//search1, Conversation
+//search2, Conversation
+//search3, Conversation
+//detail, Conversation
 
 ```
 
-- `테스트`
+## AOP
+- Command Annotation 의 전 작업으로 ConversationInfo를 생성
 
 ```java
+ConversationInfo conversationInfo = 
+    CustomUtil.stringToObject(redisFunction.getLastValue(message.getUser_key()));
+```
 
-//레디스 조회
-//redis = {function : "search", param : null }
-conv = convs.get(redis.getFunction());
+- Command Annotation 의  후 작업으로 Redis 저장작업 수행
 
-//레디스 조회
-//redis = null
+```java
+conversationInfo.setFunction(commandAnnotation.function());
+//기타 조건에 의한 값 변경
+commandAnnotation.increase().stream(key -> conversationInfo.plus(key)); (?이런식??)
 
-//실행
-functions.get(conv.getFunction()).execute(MessageRequest, redis);
+redisFunction.push(message.getUser_key(), CustomUtil.objectToString(conversationInfo));
+```
 
-//레디스 저장
-redis.initset(conv.getFunction());
-//{function : "search", param : null }
+- `1. #검색`
+
+```java
+--> redis 조회 : null
+
+if(conversationInfo == null && !startMap.containsKey(message.getContent()) ||
+        conversationInfo != null && !conversationMap.containsKey(redis.getFunction())){
+    return MessageResponse.FAILED;
+}
+
+Commander command = commanderMap.get(
+        redis==null?
+            startMap.get(message.getContent()):
+            conversationMap.get(redis.getFunction()).findMethod(message.getContent())
+);
+--> startMap.get("#검색") -> "search" -> commanderMap.get("search") -> command
+
+try {
+    return new MessageResponse(command.execute(message), null, null);
+} catch (InvocationTargetException | IllegalAccessException e) {
+    return MessageResponse.FAILED;
+}
+
+```
+
+- `2. 테스트`
+
+```java
+--> redis 조회 : {function:"search", param:null}
+
+if(conversationInfo == null && !startMap.containsKey(message.getContent()) ||
+        conversationInfo != null && !conversationMap.containsKey(redis.getFunction())){
+    return MessageResponse.FAILED;
+}
+
+Commander command = commanderMap.get(
+        redis==null?
+            startMap.get(message.getContent()):
+            conversationMap.get(redis.getFunction()).findMethod(message.getContent())
+);
+--> conversationMap.get("search") -> Conversation -> Conversation.findMethod("테스트") -> "search1" -> commanderMap.get("search1");
+
+try {
+    return new MessageResponse(command.execute(message), null, null);
+} catch (InvocationTargetException | IllegalAccessException e) {
+    return MessageResponse.FAILED;
+}
 
 ```

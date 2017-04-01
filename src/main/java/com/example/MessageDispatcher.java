@@ -6,14 +6,14 @@ import com.example.dto.MessageResponse;
 import com.example.functions.Function;
 import com.example.functions.impl.HelloUltraFunction;
 import com.example.functions.impl.RedisFunction;
-import com.example.model.Redis;
-import com.example.service.QuestionService;
+import com.example.model.ConversationInfo;
 import com.example.utils.CustomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,15 +25,29 @@ public class MessageDispatcher {
 	private RedisFunction redisFunction;
 
 	@Autowired
-	private QuestionService questionService;
-
-	@Autowired
 	private HelloUltraFunction helloUltraFunction;
 
 	private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
 
-
 	private Map<String, Commander<?>> functionMap = new HashMap<>();
+
+	/**
+	 @key : 대화형 시작점 예약어
+	 @value : function key
+	 */
+	private Map<String, String> startMap = new HashMap<>();
+
+	/**
+	 @key : function key
+	 @value : Commander class
+	 */
+	private Map<String, Commander<?>> commanderMap = new HashMap<>();
+
+	/**
+	 @key : function key
+	 @value : Conversation class
+	 */
+	Map<String, Conversation> conversationMap = new HashMap<>();
 
 	public MessageResponse dispatch(MessageRequest message) {
 		try {
@@ -61,10 +75,55 @@ public class MessageDispatcher {
 			this.function = function;
 			this.method = method;
 		}
+
+		public String execute(MessageRequest messageRequest) throws InvocationTargetException, IllegalAccessException {
+			return (String) this.method.invoke(this.function, messageRequest);
+		}
+	}
+
+	private static class Conversation {
+		String function;
+		//search1
+
+		Map<String, String> afters;
+		//#다음, search2
+		//#이전, search3
+
+		String query;
+		//detail
+
+		String getFunction(){
+			return function;
+		}
+
+		String findMethod(String command){
+			return afters.containsKey(command)?afters.get(command):query;
+		}
 	}
 
 	public MessageResponse redisDispatch(MessageRequest message) {
 		log.debug("redisDispatch start user_key : {} , message : {}", message.getUser_key() ,message.getContent());
+
+		ConversationInfo conversationInfo = CustomUtil.stringToObject(redisFunction.getLastValue(message.getUser_key()));
+
+		if(conversationInfo == null && !startMap.containsKey(message.getContent()) ||
+				conversationInfo != null && !conversationMap.containsKey(conversationInfo.getFunction())){
+			return MessageResponse.FAILED;
+		}
+
+		Commander command = commanderMap.get(
+				conversationInfo==null?
+						startMap.get(message.getContent()):
+						conversationMap.get(conversationInfo.getFunction()).findMethod(message.getContent())
+		);
+
+		try {
+			return new MessageResponse(command.execute(message), null, null);
+		} catch (InvocationTargetException | IllegalAccessException e) {
+			return MessageResponse.FAILED;
+		}
+
+		/*
 
 		//최초 redis pop
 		String value = redisFunction.getLastValue(message.getUser_key());
@@ -102,6 +161,6 @@ public class MessageDispatcher {
 		}
 		log.debug("redis function : {}, param : {}", redis.getFunction(), redis.getParam().toString());
 
-		return new MessageResponse(resultMessage, null, null);
+		return new MessageResponse(resultMessage, null, null);*/
 	}
 }

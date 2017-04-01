@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by joonghyun on 2017. 3. 19..
  */
-public class Redis {
+public class ConversationInfo {
 
     private String function;    //호출 메소드명
 

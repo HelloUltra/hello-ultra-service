@@ -2,9 +2,8 @@ package com.example.config;
 
 import com.example.dto.MessageRequest;
 import com.example.dto.MessageResponse;
-import com.example.dto.Param;
 import com.example.functions.impl.RedisFunction;
-import com.example.model.Redis;
+import com.example.model.ConversationInfo;
 import com.example.utils.CustomUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -44,7 +43,7 @@ public class AspectConfig {
                     break;
                 }
 
-                Redis redis = CustomUtil.stringToObject(value);
+                ConversationInfo redis = CustomUtil.stringToObject(value);
                 log.debug("뒤로 -> function : {}, param : {}", redis.getFunction(), redis.getParam().toString());
                 break;
             case "다시" : //redis 모두 삭제

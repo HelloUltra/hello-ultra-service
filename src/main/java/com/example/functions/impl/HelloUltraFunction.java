@@ -3,7 +3,7 @@ package com.example.functions.impl;
 import com.example.dto.MessageRequest;
 import com.example.dto.Param;
 import com.example.message.Message;
-import com.example.model.Redis;
+import com.example.model.ConversationInfo;
 import com.example.service.AnswerService;
 import com.example.service.QuestionService;
 import com.example.utils.CustomUtil;
@@ -30,7 +30,7 @@ public class HelloUltraFunction {
     private AnswerService answerService;
 
     //검색
-    public String search(MessageRequest message, Redis redis) {
+    public String search(MessageRequest message, ConversationInfo redis) {
         log.debug("HelloUltraFunction search start");
         log.debug("message : {}, redisFunction : {}, redisParam : {}", message.getContent(), redis.getFunction(), redis.getParam().toString());
         String resultMsg = null;
@@ -39,7 +39,7 @@ public class HelloUltraFunction {
             resultMsg = questionService.search(message.getContent(), 1);
             if(!Message.NO_DB_DATA.equals(resultMsg)) {
                 //검색결과가 있으면 redis push 후 종료.
-                Redis rs = CustomUtil.paramToObject("search"
+                ConversationInfo rs = CustomUtil.paramToObject("search"
                         , new Param("content", message.getContent())
                         , new Param("page", "1"));
                 redisFunction.push(message.getUser_key(), CustomUtil.objectToString(rs));
@@ -99,7 +99,7 @@ public class HelloUltraFunction {
                     break;
                 }
                 //검색결과가 있을경우 redis push 기존 value 와 함께
-                Redis rs = CustomUtil.paramToObject("questionDetail", new Param("questionIdx", message.getContent()));
+                ConversationInfo rs = CustomUtil.paramToObject("questionDetail", new Param("questionIdx", message.getContent()));
                 redisFunction.push(message.getUser_key(), CustomUtil.objectToString(rs));
                 //정상일경우
                 //key : userKey, value : [0] { "function": "search", "param": {  } }
@@ -111,7 +111,7 @@ public class HelloUltraFunction {
     }
 
     //질문상세보기
-    public String questionDetail(MessageRequest message, Redis redis) {
+    public String questionDetail(MessageRequest message, ConversationInfo redis) {
         log.debug("HelloUltraFunction questionDetail start");
         log.debug("message : {}, redisFunction : {}, redisParam : {}", message.getContent(), redis.getFunction(), redis.getParam().toString());
 
@@ -130,7 +130,7 @@ public class HelloUltraFunction {
                 }
 
                 //검색결과가 있을경우 redis push
-                Redis rs = CustomUtil.paramToObject("searchAnswer"
+                ConversationInfo rs = CustomUtil.paramToObject("searchAnswer"
                         , new Param("questionIdx", redis.getParam().get("questionIdx"))
                         , new Param("page", "1"));
                 redisFunction.push(message.getUser_key(), CustomUtil.objectToString(rs));
@@ -138,7 +138,7 @@ public class HelloUltraFunction {
                 break;
             case "답변등록" :
                 log.debug("답변등록 진행");
-                 Redis rs1 = CustomUtil.paramToObject("registerAnswer"
+                 ConversationInfo rs1 = CustomUtil.paramToObject("registerAnswer"
                         , new Param("questionIdx", redis.getParam().get("questionIdx"))
                         , new Param("page","1"));
                 redisFunction.push(message.getUser_key(), CustomUtil.objectToString(rs1));
@@ -152,12 +152,12 @@ public class HelloUltraFunction {
         return resultMsg;
     }
 
-    public String registerAnswer(MessageRequest message, Redis redis){
+    public String registerAnswer(MessageRequest message, ConversationInfo redis){
         return answerService.registerAnswer(redis.getParam().get("questionIdx"), message);
     }
 
     //답변검색
-    public String searchAnswer(MessageRequest message, Redis redis) {
+    public String searchAnswer(MessageRequest message, ConversationInfo redis) {
         log.debug("HelloUltraFunction searchAnswer start");
         log.debug("message : {}, redisFunction : {}, redisParam : {}", message.getContent(), redis.getFunction(), redis.getParam().toString());
         String resultMsg = null;
@@ -207,7 +207,7 @@ public class HelloUltraFunction {
                     break;
                 }
                 //검색결과가 있을경우 redis push 기존 value 와 함께
-                Redis rs = CustomUtil.paramToObject("answerDetail", new Param("answerIdx", message.getContent()));
+                ConversationInfo rs = CustomUtil.paramToObject("answerDetail", new Param("answerIdx", message.getContent()));
                 redisFunction.push(message.getUser_key(), CustomUtil.objectToString(rs));
         }
         return resultMsg;
