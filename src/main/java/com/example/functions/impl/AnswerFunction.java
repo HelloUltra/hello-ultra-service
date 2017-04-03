@@ -31,7 +31,51 @@ public class AnswerFunction extends Function {
     @Autowired
     private AnswerRepository answerRepository;
 
-    @Autowired
+    @Command(parent = "questionDetail", function = "searchAnswer")
+    public String searchAnswer(String questionIdx) {
+        log.debug("#답변검색 : {}",questionIdx);
+        if(!IndexUtils.verifyIndex(questionIdx)){
+            return "번호가 올바르지 않습니다.";
+        }
+        List<Answer> answers;
+        if((answers = answerRepository.findTop3AnswerByContent(Long.valueOf(questionIdx))) == null || answers.size() == 0) {
+            return "검색 결과가 없습니다.";
+        }
+        return ContentUtils.convertListToMessage(answers);
+    }
+
+    @Command(value = "#다음", parent = "questionDetail", function = "nextSearchAnswer")
+    public String nextSearchAnswer(String questionIdx) {
+        log.debug("#답변검색 다음 : {}",questionIdx);
+        return "";
+    }
+
+    @Command(value = "#이전", parent = "questionDetail", function = "preSearchAnswer")
+    public String preSearchAnswer(String questionIdx) {
+        log.debug("#답변검색 이전 : {}",questionIdx);
+        return "";
+    }
+
+    @Command(parent = "searchAnswer", function = "answerDetail")
+    public String answerDetail(String answerIdx) {
+        log.debug("#답변상세보기:{}",answerIdx);
+        if(!IndexUtils.verifyIndex(answerIdx)){
+            return "번호가 올바르지 않습니다.";
+        }
+        Answer answer;
+        if((answer = answerRepository.getAnswerDetail(Long.valueOf(answerIdx))) == null ) {
+            return "검색 결과가 없습니다.";
+        }
+        return ContentUtils.convertToMessage(answer);
+    }
+
+    @Command(value = "#답변등록", parent = "questionDetail", function = "registerAnswer")
+    public String registerAnswer(String user_key){
+        return "답변하실 질문번호를 입력해주세요";
+    }
+
+
+    /*@Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     @Resource(name="strRedisTemplate")
@@ -76,7 +120,7 @@ public class AnswerFunction extends Function {
         listOperations.rightPush(user_key, status);
 
         return "답변하실 질문번호를 입력해주세요";
-    }
+    }*/
 
     //    @Command("답변검색")
     //    public String searchAnswer(String id){
