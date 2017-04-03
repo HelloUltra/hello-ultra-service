@@ -73,31 +73,31 @@ batch : 익명 사용자의 데이터를 가입된 사용자 데이터로 전환
 
 ```java
 //시작점 예약어
-@Command(group="search", value="#검색", function="search", query="search1", after=[])
+@Command(value="검색", function="search")
 public void search(com.example.dto.MessageRequest messageRequest){
     return "검색어를 입력해주세요."
 }
 
 //검색하는 메서드
-@Command(group="search", value="", function="search1", query="detail:num", after=["search2","search3"])
+@Command(parent="search", function="search1")
 public void search1(com.example.dto.MessageRequest messageRequest){
     return ""
 }
 
 //다음
-@Command(group="search", value="#다음", function="search2", query="detail:num", after=["search2","search3"], increable="+page")
+@Command(parent={"search1","search3"}, value="다음", function="search2", increable="+page")
 public void search2(com.example.dto.MessageRequest messageRequest){
     return ""
 }
 
 //이전
-@Command(group="search", value="#이전", function="search3", query="detail:num", after=["search2","search3"], increable="-page")
+@Command(parent={"search1","search2"}, value="이전", increable="-page")
 public void search3(com.example.dto.MessageRequest messageRequest){
     return ""
 }
 
 //상세보기
-@Command(group="search", value="", function="detail", after=["searchAnswer","registerAnswer"])
+@Command(group={"search1","search2","search3"}, function="detail")
 public void detail(com.example.dto.MessageRequest messageRequest){
     return ""
 }
@@ -110,9 +110,6 @@ public void detail(com.example.dto.MessageRequest messageRequest){
 
 //Command당 하나(ex : search1)
 class Conversation {
-    String function;
-    //search1
-    
     Map<String, String> afters;
     //#다음, search2
     //#이전, search3
@@ -120,23 +117,25 @@ class Conversation {
     String query;
     //detail
     
-    getFunction(){
-        return function;
-    }
-    
     String findMethod(String command){
         return afters.contains(command)?afters.get(command):query;
     }
 }
 
 /** 
-@key : 대화형 시작점 예약어
+
+parent를 갖지 않은 command
+
+@key : command
 @value : function key
 */
-private Map<String, String> startMap = new HashMap<>();
+private Map<String, String> commandMap = new HashMap<>();
 // ex) "#검색" , "search"
 
 /** 
+
+모든 commander의 정보
+
 @key : function key
 @value : Commander class
 */
@@ -148,12 +147,16 @@ private Map<String, Commander<?>> commanderMap = new HashMap<>();
 //      "detail" , Commander
 
 /** 
+
+각 command의 추후 작업에 대한 conversation을 저장
+
 @key : function key
 @value : Conversation class
 */
 Map<String, Conversation> conversationMap = new HashMap<>();
 //search, Conversation
 //search1, Conversation
+
 //search2, Conversation
 //search3, Conversation
 //detail, Conversation
