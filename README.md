@@ -230,3 +230,5 @@ try {
 }
 
 ```
+
+[설계 문서](https://docs.google.com/presentation/d/1TROQwWStmRAw63icuWptnPtNBEvTloKij0txuWIv22w/edit?usp=sharing)
