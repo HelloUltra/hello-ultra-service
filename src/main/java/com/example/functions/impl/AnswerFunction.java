@@ -44,13 +44,13 @@ public class AnswerFunction extends Function {
         return ContentUtils.convertListToMessage(answers);
     }
 
-    @Command(value = "#다음", parent = "questionDetail", function = "nextSearchAnswer")
+    @Command(value = "다음", parent = "questionDetail", function = "nextSearchAnswer", increable = "+page")
     public String nextSearchAnswer(String questionIdx) {
         log.debug("#답변검색 다음 : {}",questionIdx);
         return "";
     }
 
-    @Command(value = "#이전", parent = "questionDetail", function = "preSearchAnswer")
+    @Command(value = "이전", parent = "questionDetail", function = "preSearchAnswer", increable = "-page")
     public String preSearchAnswer(String questionIdx) {
         log.debug("#답변검색 이전 : {}",questionIdx);
         return "";

@@ -49,6 +49,21 @@ public class MessageDispatcher {
 	 */
 	Map<String, Conversation> conversationMap = new HashMap<>();
 
+	@SuppressWarnings("unchecked")
+	public <T extends Function> void commanderPut(T function, Method method) {
+		commanderMap.put(method.getAnnotation(Command.class).function(), new Commander(function, method));
+	}
+
+
+
+
+
+
+
+
+
+
+
 	public MessageResponse dispatch(MessageRequest message) {
 		try {
 			Commander commander = functionMap.get(message.command());
@@ -103,6 +118,8 @@ public class MessageDispatcher {
 
 	public MessageResponse redisDispatch(MessageRequest message) {
 		log.debug("redisDispatch start user_key : {} , message : {}", message.getUser_key() ,message.getContent());
+
+		startMap.put("검색","검색");	//test
 
 		ConversationInfo conversationInfo = CustomUtil.stringToObject(redisFunction.getLastValue(message.getUser_key()));
 

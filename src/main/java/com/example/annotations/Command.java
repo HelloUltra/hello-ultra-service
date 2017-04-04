@@ -14,4 +14,5 @@ public @interface Command {
     String value() default "";
     String parent() default "";
     String function() default "";
+    String increable() default "";
 }

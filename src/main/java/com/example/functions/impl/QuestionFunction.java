@@ -1,7 +1,9 @@
 package com.example.functions.impl;
 
 import com.example.annotations.Command;
+import com.example.dto.MessageRequest;
 import com.example.functions.Function;
+import com.example.message.Message;
 import com.example.model.Question;
 import com.example.repository.QuestionRepository;
 import com.example.utils.ContentUtils;
@@ -26,8 +28,13 @@ public class QuestionFunction extends Function {
     @Autowired
     private QuestionRepository questionRepository;
 
-    @Command(value="#검색", function="search")
-    public String search(String tag) {
+    @Command(value="검색", function="search")
+    public String search() {
+        return Message.EMPTY_SEARCH_MESSAGE;
+    }
+
+    @Command(parent = "search", function="listSearch")
+    public String listSearch(String tag) {
         log.debug("#검색:{}",tag);
         List<Question> questions;
         if((questions=questionRepository.findTop3QuestionByTagName(tag)) == null || questions.size() == 0){
@@ -36,16 +43,17 @@ public class QuestionFunction extends Function {
         return ContentUtils.convertListToMessage(questions);
     }
 
-    @Command(value="#다음", function="nextSearch")
+    //@Command(value="#다음", function="nextSearch")
+    @Command(parent="listSearch", value="다음", function="nextSearch")
     public String nextSearch(String tag) {
         log.debug("#다음:{}",tag);
-        return search(tag);
+        return listSearch(tag);
     }
 
     @Command(value="#이전", function="preSearch")
     public String preSearch(String tag) {
         log.debug("#이전:{}",tag);
-        return search(tag);
+        return listSearch(tag);
     }
 
     @Command(parent="search", function="questionDetail")

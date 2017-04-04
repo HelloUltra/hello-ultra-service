@@ -16,8 +16,10 @@ public class Function {
 
     @PostConstruct
     public void init(){
+        //commandMap put
         Arrays.stream(this.getClass().getMethods())
                 .filter(method -> method.isAnnotationPresent(Command.class))
-                .forEach(method -> messageDispatcher.put(this, method));
+                .forEach(method -> messageDispatcher.commanderPut(this, method));
+
     }
 }
