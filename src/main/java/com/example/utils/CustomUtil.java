@@ -31,6 +31,9 @@ public class CustomUtil {
     }
 
     public static ConversationInfo stringToObject(String str) {
+        if(str == null) {
+            return null;
+        }
         ObjectMapper mapper = new ObjectMapper();
         ConversationInfo redis = new ConversationInfo();
         try {

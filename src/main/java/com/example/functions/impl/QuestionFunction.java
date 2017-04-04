@@ -29,31 +29,33 @@ public class QuestionFunction extends Function {
     private QuestionRepository questionRepository;
 
     @Command(value="검색", function="search")
-    public String search() {
+    public String search(MessageRequest messageRequest) {
+        log.debug("#search");
         return Message.EMPTY_SEARCH_MESSAGE;
     }
 
     @Command(parent = "search", function="listSearch")
-    public String listSearch(String tag) {
-        log.debug("#검색:{}",tag);
-        List<Question> questions;
-        if((questions=questionRepository.findTop3QuestionByTagName(tag)) == null || questions.size() == 0){
-            return "검색 결과가 없습니다.";
-        }
-        return ContentUtils.convertListToMessage(questions);
+    public String listSearch(MessageRequest messageRequest) {
+        log.debug("#listSearch");
+        return "listSearch";
+//        List<Question> questions;
+//        if((questions=questionRepository.findTop3QuestionByTagName(tag)) == null || questions.size() == 0){
+//            return "검색 결과가 없습니다.";
+//        }
+//        return ContentUtils.convertListToMessage(questions);
     }
 
     //@Command(value="#다음", function="nextSearch")
     @Command(parent="listSearch", value="다음", function="nextSearch")
     public String nextSearch(String tag) {
-        log.debug("#다음:{}",tag);
-        return listSearch(tag);
+        log.debug("#listSearch 다음");
+        return "#listSearch 다음";
     }
 
     @Command(value="#이전", function="preSearch")
     public String preSearch(String tag) {
-        log.debug("#이전:{}",tag);
-        return listSearch(tag);
+        log.debug("#listSearch 이전");
+        return "#listSearch 이전";
     }
 
     @Command(parent="search", function="questionDetail")

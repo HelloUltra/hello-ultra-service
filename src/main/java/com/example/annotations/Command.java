@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 public @interface Command {
     String value() default "";
     String parent() default "";
-    String function() default "";
+    String function();
     String increable() default "";
 }

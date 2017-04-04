@@ -5,8 +5,10 @@ import com.example.dto.MessageRequest;
 import com.example.dto.MessageResponse;
 import com.example.functions.Function;
 import com.example.functions.impl.HelloUltraFunction;
+import com.example.functions.impl.QuestionFunction;
 import com.example.functions.impl.RedisFunction;
 import com.example.model.ConversationInfo;
+import com.example.model.Question;
 import com.example.utils.CustomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,8 @@ import java.util.Map;
 @Component
 public class MessageDispatcher {
 
+	@Autowired
+	private QuestionFunction questionFunction;
 	@Autowired
 	private RedisFunction redisFunction;
 
@@ -119,7 +123,19 @@ public class MessageDispatcher {
 	public MessageResponse redisDispatch(MessageRequest message) {
 		log.debug("redisDispatch start user_key : {} , message : {}", message.getUser_key() ,message.getContent());
 
-		startMap.put("검색","검색");	//test
+
+		//test start
+		questionFunction.search(null);	//aop 정상작동
+		questionFunction.search(null);	//aop 정상작동
+
+		try {
+			commanderMap.get("search").execute(null);	//aop 작동하지 않음. TODO 확인
+		} catch (InvocationTargetException | IllegalAccessException e) {
+			return MessageResponse.FAILED;
+		}
+		//test end
+
+		startMap.put("검색","search");	//test
 
 		ConversationInfo conversationInfo = CustomUtil.stringToObject(redisFunction.getLastValue(message.getUser_key()));
 
