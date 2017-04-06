@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.dispatcher.MessageDispatcher;
 import com.example.dto.MessageRequest;
 import com.example.dto.Paging;
 import com.example.model.Answer;
@@ -11,14 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 

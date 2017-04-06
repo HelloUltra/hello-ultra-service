@@ -1,7 +1,7 @@
 package com.example.functions;
 
-import com.example.MessageDispatcher;
 import com.example.annotations.Command;
+import com.example.dispatcher.MessageDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;

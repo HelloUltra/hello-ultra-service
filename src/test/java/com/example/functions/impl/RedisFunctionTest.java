@@ -1,18 +1,10 @@
 package com.example.functions.impl;
 
-import com.example.MessageDispatcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.annotation.Resource;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by cjh on 2017. 3. 20..

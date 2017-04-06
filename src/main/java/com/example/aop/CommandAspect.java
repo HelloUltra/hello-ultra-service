@@ -17,10 +17,14 @@ public class CommandAspect {
     private static final Logger log = LoggerFactory.getLogger(CommandAspect.class);
 
     @Around("@annotation(com.example.annotations.Command)")
+    //@Around("execution(* com..*Function.*(..))")
     public Object redisCheck(ProceedingJoinPoint joinPoint) throws Throwable {
         log.debug("redisCheck start go go~");
 
-        return joinPoint.proceed();
+        Object object = joinPoint.proceed();
+
+        log.debug("redisCheck end");
+        return object;
     }
 
 }

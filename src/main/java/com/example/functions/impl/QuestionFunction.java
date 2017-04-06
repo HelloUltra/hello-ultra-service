@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * Created by YG-MAC on 2017. 3. 11..
  */
@@ -30,7 +28,7 @@ public class QuestionFunction extends Function {
 
     @Command(value="검색", function="search")
     public String search(MessageRequest messageRequest) {
-        log.debug("#search");
+        log.debug("#QuestionFunction search");
         return Message.EMPTY_SEARCH_MESSAGE;
     }
 
