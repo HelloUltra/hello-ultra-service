@@ -9,8 +9,10 @@ import com.example.functions.impl.QuestionFunction;
 import com.example.functions.impl.RedisFunction;
 import com.example.model.ConversationInfo;
 import com.example.utils.CustomUtil;
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,8 @@ public class MessageDispatcher {
 
 	@Autowired
 	private HelloUltraFunction helloUltraFunction;
+
+//	@Autowired Function function;
 
 	private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
 
@@ -55,18 +59,9 @@ public class MessageDispatcher {
 	Map<String, Conversation> conversationMap = new HashMap<>();
 
 	@SuppressWarnings("unchecked")
-	public <T extends Function> void commanderPut(T function, Method method) {
-		commanderMap.put(method.getAnnotation(Command.class).function(), new Commander(function, method));
+	public <T extends Function> void commanderPut(T function, Method method, BeanFactory beanFactory) {
+		commanderMap.put(method.getAnnotation(Command.class).function(), new Commander(function, method, beanFactory));
 	}
-
-
-
-
-
-
-
-
-
 
 
 	public MessageResponse dispatch(MessageRequest message) {
@@ -84,20 +79,28 @@ public class MessageDispatcher {
 
 	@SuppressWarnings("unchecked")
 	public <T extends Function> void put(T function, Method method) {
-		functionMap.put("#" + method.getAnnotation(Command.class).value(), new Commander(function, method));
+		functionMap.put("#" + method.getAnnotation(Command.class).value(), new Commander(function, method, null));
 	}
 
 	private static class Commander<T extends Function> {
-		private T function;
-		private Method method;
+		private  T function;
+		private  Method method;
+		private BeanFactory beanFactory;
 
-		Commander(T function, Method method){
+		private String name;
+		private Object obj;
+
+		Commander(T function, Method method, BeanFactory beanFactory){
 			this.function = function;
 			this.method = method;
+			this.beanFactory = beanFactory;
 		}
 
+
 		public String execute(MessageRequest messageRequest) throws InvocationTargetException, IllegalAccessException {
-			return (String) this.method.invoke(this.function, messageRequest);
+			this.name = WordUtils.uncapitalize(function.getClass().getSimpleName());
+			obj = beanFactory.getBean(name);
+			return (String) this.method.invoke(obj, messageRequest);
 		}
 	}
 
@@ -125,20 +128,30 @@ public class MessageDispatcher {
 		log.debug("redisDispatch start user_key : {} , message : {}", message.getUser_key() ,message.getContent());
 
 
-		//test start
-		//questionFunction.search(null);	//aop 정상작동
+
+
 		log.debug("-------------------");
 		questionFunction.search(null);	//aop 정상작동
 		log.debug("-------------------");
 
+		//test start
+		//questionFunction.search(null);	//aop 정상작동
+
 		try {
 			log.debug("-------------------");
-			commanderMap.get("search").execute(null);	//aop 작동하지 않음. TODO 확인
+			commanderMap.get("search").execute(null);
 			log.debug("-------------------");
-		} catch (InvocationTargetException | IllegalAccessException e) {
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 			return MessageResponse.FAILED;
 		}
+
+//		catch (InvocationTargetException | IllegalAccessException e) {
+//			return MessageResponse.FAILED;
+//		}
 		//test end
+
 
 
 		startMap.put("검색","search");	//test
