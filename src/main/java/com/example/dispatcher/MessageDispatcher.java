@@ -34,8 +34,6 @@ public class MessageDispatcher {
 	@Autowired
 	private HelloUltraFunction helloUltraFunction;
 
-//	@Autowired Function function;
-
 	private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
 
 	private Map<String, Commander<?>> functionMap = new HashMap<>();
@@ -83,12 +81,9 @@ public class MessageDispatcher {
 	}
 
 	private static class Commander<T extends Function> {
-		private  T function;
-		private  Method method;
+		private T function;
+		private Method method;
 		private BeanFactory beanFactory;
-
-		private String name;
-		private Object obj;
 
 		Commander(T function, Method method, BeanFactory beanFactory){
 			this.function = function;
@@ -96,11 +91,8 @@ public class MessageDispatcher {
 			this.beanFactory = beanFactory;
 		}
 
-
 		public String execute(MessageRequest messageRequest) throws InvocationTargetException, IllegalAccessException {
-			this.name = WordUtils.uncapitalize(function.getClass().getSimpleName());
-			obj = beanFactory.getBean(name);
-			return (String) this.method.invoke(obj, messageRequest);
+			return (String) this.method.invoke(beanFactory.getBean(WordUtils.uncapitalize(function.getClass().getSimpleName())), messageRequest);
 		}
 	}
 

@@ -20,7 +20,6 @@ public class Function {
 
     @PostConstruct
     public void init(){
-        System.out.println("beanName : " + beanFactory.getClass().getName());
         Arrays.stream(this.getClass().getMethods())
                 .filter(method -> method.isAnnotationPresent(Command.class))
                 .forEach(method -> messageDispatcher.commanderPut(this, method, beanFactory));
