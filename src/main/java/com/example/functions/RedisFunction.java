@@ -1,4 +1,4 @@
-package com.example.functions.impl;
+package com.example.functions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,6 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Set;
 
 /**
  * Created by cjh on 2017. 3. 20..

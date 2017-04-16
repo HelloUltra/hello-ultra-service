@@ -1,8 +1,8 @@
-package com.example.functions.impl;
+package com.example.functions;
 
 import com.example.annotations.Command;
+import com.example.annotations.Commander;
 import com.example.dto.MessageRequest;
-import com.example.functions.Function;
 import com.example.message.Message;
 import com.example.model.Question;
 import com.example.repository.QuestionRepository;
@@ -11,15 +11,14 @@ import com.example.utils.IndexUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by YG-MAC on 2017. 3. 11..
  */
-@Component
+@Commander
 @Transactional
-public class QuestionFunction extends Function {
+public class QuestionFunction {
 
     private static final Logger log = LoggerFactory.getLogger(QuestionFunction.class);
 

@@ -1,15 +1,20 @@
 package com.example.dispatcher;
 
 import com.example.annotations.Command;
+import com.example.annotations.Commander;
 import com.example.dto.MessageRequest;
 import com.example.dto.MessageResponse;
-import com.example.functions.Function;
-import com.example.functions.impl.HelloUltraFunction;
-import com.example.functions.impl.QuestionFunction;
-import com.example.functions.impl.RedisFunction;
+import com.example.functions.HelloUltraFunction;
+import com.example.functions.QuestionFunction;
+import com.example.functions.RedisFunction;
 import com.example.model.ConversationInfo;
 import com.example.utils.CustomUtil;
 import org.apache.commons.lang3.text.WordUtils;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -17,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -34,9 +40,25 @@ public class MessageDispatcher {
 	@Autowired
 	private HelloUltraFunction helloUltraFunction;
 
-	private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
+	@Autowired
+	private BeanFactory beanFactory;
 
-	private Map<String, Commander<?>> functionMap = new HashMap<>();
+	@PostConstruct
+	public void init(){
+		Reflections reflections = new Reflections(new ConfigurationBuilder()
+				.setUrls(ClasspathHelper.forPackage("com.example")).setScanners(
+						new TypeAnnotationsScanner(), new SubTypesScanner()));
+		for(Class<?> clazz : reflections.getTypesAnnotatedWith(com.example.annotations.Commander.class)) {
+			for (Method method : clazz.getMethods()) {
+				if (method.isAnnotationPresent(Command.class)) {
+					Command command = method.getAnnotation(Command.class);
+					commanderMap.put(command.function(), new Commander(WordUtils.uncapitalize(clazz.getSimpleName()), method, beanFactory));
+				}
+			}
+		}
+	}
+
+	private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
 
 	/**
 	 @key : 대화형 시작점 예약어
@@ -48,7 +70,7 @@ public class MessageDispatcher {
 	 @key : function key
 	 @value : Commander class
 	 */
-	private Map<String, Commander<?>> commanderMap = new HashMap<>();
+	private Map<String, Commander> commanderMap = new HashMap<>();
 
 	/**
 	 @key : function key
@@ -56,43 +78,27 @@ public class MessageDispatcher {
 	 */
 	Map<String, Conversation> conversationMap = new HashMap<>();
 
-	@SuppressWarnings("unchecked")
-	public <T extends Function> void commanderPut(T function, Method method, BeanFactory beanFactory) {
-		commanderMap.put(method.getAnnotation(Command.class).function(), new Commander(function, method, beanFactory));
-	}
-
-
 	public MessageResponse dispatch(MessageRequest message) {
-		try {
-			Commander commander = functionMap.get(message.command());
-			if(commander == null){
-				return MessageResponse.FAILED;
-			}
-			return  new MessageResponse((String) commander.method.invoke(commander.function, message.keyword()), null, null);
-		} catch(Exception e){
-			log.error("dispatch - {} : {}", message.command(), e);
-			return MessageResponse.FAILED;
-		}
+		return MessageResponse.FAILED;
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends Function> void put(T function, Method method) {
-		functionMap.put("#" + method.getAnnotation(Command.class).value(), new Commander(function, method, null));
-	}
-
-	private static class Commander<T extends Function> {
-		private T function;
-		private Method method;
+	private static class Commander {
+		private String name;
+		private Object bean;
 		private BeanFactory beanFactory;
+		private Method method;
 
-		Commander(T function, Method method, BeanFactory beanFactory){
-			this.function = function;
+		Commander(String name, Method method, BeanFactory beanFactory){
+			this.name = name;
 			this.method = method;
 			this.beanFactory = beanFactory;
 		}
 
-		public String execute(MessageRequest messageRequest) throws InvocationTargetException, IllegalAccessException {
-			return (String) this.method.invoke(beanFactory.getBean(WordUtils.uncapitalize(function.getClass().getSimpleName())), messageRequest);
+		String execute(MessageRequest messageRequest) throws InvocationTargetException, IllegalAccessException {
+			if(this.bean == null){
+				this.bean = beanFactory.getBean(this.name);
+			}
+			return (String) this.method.invoke(this.bean, messageRequest);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.example.functions.impl;
+package com.example.functions;
 
 import com.example.dto.MessageRequest;
 import com.example.dto.Param;

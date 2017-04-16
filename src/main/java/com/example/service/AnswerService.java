@@ -6,10 +6,9 @@
 
 package com.example.service;
 
-import com.example.annotations.Command;
 import com.example.dto.MessageRequest;
 import com.example.dto.Paging;
-import com.example.functions.impl.AnswerFunction;
+import com.example.functions.AnswerFunction;
 import com.example.message.Message;
 import com.example.model.Answer;
 import com.example.repository.AnswerRepository;
